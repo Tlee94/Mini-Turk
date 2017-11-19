@@ -1,10 +1,14 @@
-{% if all_profiles %}
-<h3> Here are all profile </h3>
+<!-- list of jobs -->
+
+{% if all_jobs %}
+<h3> Here are all jobs </h3>
 <ul>
-    {% for profile in all_profiles %}
-    <li><a href="/turk/{{profile.id}}/">{{profile.name}}</a></li>
+    {% for job in all_jobs %}
+    <li><a href = "{% url 'turk:job_description' job.profile.id job.id %}">{{ job.job_title }}</a></li>
     {% endfor %}
 </ul>
 {% else %}
     <h3> No Profile yet </h3>
 {% endif %}
+
+

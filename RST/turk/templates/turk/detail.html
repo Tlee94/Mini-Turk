@@ -1,8 +1,10 @@
+<!-- job description page -->
+
 <h1>{{ profile.name }}</h1>
 <h3>{{ profile.email }}</h3>
 
 <ul>
     {% for job in profile.job_set.all %}
-        <li>{{ job.job_title }} - {{job.job_description}}</li>
+    <li><a href = "{% url 'turk:job_description' job.profile.id job.id %}">{{ job.job_title }}</a></li>
     {% endfor %}
 </ul>

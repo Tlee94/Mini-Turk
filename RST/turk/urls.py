@@ -1,7 +1,15 @@
 from django.conf.urls import url
 from . import views
 
+app_name = 'turk'
+
 urlpatterns = [
-    url(r'^$', views.index, name='index '),
-    url(r'^(?P<profile_id>[0-9]+)/$', views.detail, name='detail')
+    # main page - list of jobs
+    url(r'^$', views.index, name='index'),
+
+    # profile page
+    url(r'^(?P<profile_id>[0-9]+)/$', views.detail, name='detail'),
+
+    # job description page
+    url(r'^(?P<profile_id>[0-9]+)/job/(?P<job_id>[0-9]+)/$', views.job_description, name='job_description'),
 ]

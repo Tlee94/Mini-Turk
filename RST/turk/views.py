@@ -1,20 +1,27 @@
-from django.http import Http404
-from django.http import HttpResponse
-from django.shortcuts import render
-from .models import Profile
+from django.shortcuts import render, get_object_or_404
+from .models import Profile,Job
 
 
 def index(request):
-    all_profiles = Profile.objects.all()
+    all_jobs = Job.objects.all()
     context = {
-        'all_profiles': all_profiles,
+        'all_jobs': all_jobs,
     }
     return render(request, 'turk/index.html', context)
 
 
 def detail(request, profile_id):
-    try:
-        profile = Profile.objects.get(pk=profile_id)
-    except Profile.DoesNotExist:
-        raise Http404("Profile Does Not Exist")
+    profile = get_object_or_404(Profile, pk=profile_id)
     return render(request, 'turk/detail.html',  {'profile': profile})
+
+
+def job_description(request, profile_id, job_id):
+    profile = get_object_or_404(Profile, pk=profile_id)
+    job = Job.objects.get(pk=job_id)
+    context = {
+        'profile': profile,
+        'job': job,
+    }
+    return render(request, 'turk/job_description.html', context)
+
+
