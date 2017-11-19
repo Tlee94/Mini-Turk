@@ -1,0 +1,10 @@
+{% if all_profiles %}
+<h3> Here are all profile </h3>
+<ul>
+    {% for profile in all_profiles %}
+    <li><a href="/turk/{{profile.id}}/">{{profile.name}}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+    <h3> No Profile yet </h3>
+{% endif %}
