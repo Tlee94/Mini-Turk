@@ -16,7 +16,7 @@ class Profile(models.Model):
 class Job(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     job_title = models.CharField(max_length=250)
-    job_description = models.CharField(max_length=800)
+    job_description = models.TextField()
     is_complete = models.BooleanField(default=False)
 
     def __str__(self):
