@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Profile, Job
+from .forms import JobForm
 
 
 def index(request):
@@ -27,7 +28,11 @@ def job_description(request, profile_id, job_id):
 
 def create_job(request, profile_id):
     profile = get_object_or_404(Profile, pk=profile_id)
-    fields = ['job_title', 'job_description']
-    return render(request, 'turk/create_job.html', {'profile': profile})
-
-
+    form = JobForm()
+    context = {
+        'profile': profile,
+        'form': form,
+    }
+    return render(request, 'turk/create_job.html', context)
+    #profile = get_object_or_404(Profile, pk=profile_id)
+    #return render(request, 'turk/create_job.html', {'profile': profile})
