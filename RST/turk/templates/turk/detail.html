@@ -1,14 +1,17 @@
 <!-- profile page -->
+{% extends 'turk/base.html' %}
 
-<h1>{{ profile.name }}</h1>
-<h3>{{ profile.email }}</h3>
+{% block body %}
+    <h1>{{ profile.name }}</h1>
+    <h3>{{ profile.email }}</h3>
 
-<form action="{% url 'turk:create_job' profile.id %}">
-    <input type="submit" value="Create New Job">
-</form>
+    <form action="{% url 'turk:create_job' profile.id %}">
+        <input type="submit" value="Create New Job">
+    </form>
 
-<ul>
-    {% for job in profile.job_set.all %}
-    <li><a href = "{% url 'turk:job_description' job.profile.id job.id %}">{{ job.job_title }}</a></li>
-    {% endfor %}
-</ul>
+    <ul>
+        {% for job in profile.job_set.all %}
+        <li><a href = "{% url 'turk:job_description' job.profile.id job.id %}">{{ job.job_title }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
