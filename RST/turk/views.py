@@ -27,6 +27,7 @@ def job_description(request, profile_id, job_id):
 
 def create_job(request, profile_id):
     profile = get_object_or_404(Profile, pk=profile_id)
+    fields = ['job_title', 'job_description']
     return render(request, 'turk/create_job.html', {'profile': profile})
 
 
