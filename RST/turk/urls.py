@@ -7,6 +7,9 @@ urlpatterns = [
     # main page - list of jobs
     url(r'^$', views.index, name='index'),
 
+    # register page
+    url(r'^register/$', views.UserFormView.as_view(), name='register'),
+
     # profile page
     url(r'^(?P<profile_id>[0-9]+)/$', views.detail, name='detail'),
 
