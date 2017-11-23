@@ -88,6 +88,7 @@ class UserFormView(View):
             username = form.cleaned_data['username'] # 'username' = field
             password = form.cleaned_data['password']
             user.set_password(password)
+            user.is_active = False
             user.save()
 
             # request User objects if credentials are correct
