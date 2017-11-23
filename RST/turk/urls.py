@@ -10,6 +10,12 @@ urlpatterns = [
     # register page
     url(r'^register/$', views.UserFormView.as_view(), name='register'),
 
+    # login page
+    url(r'^login_user/$', views.login_user, name='login_user'),
+
+    # logout page
+    url(r'^logout_user/$', views.logout_user, name='logout_user'),
+
     # profile page
     url(r'^(?P<profile_id>[0-9]+)/$', views.detail, name='detail'),
 
