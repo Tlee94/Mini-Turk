@@ -7,6 +7,7 @@ from django.views.generic import View
 from .forms import JobForm, UserForm
 
 
+# home page
 def index(request):
     all_jobs = Job.objects.all()
     context = {
@@ -15,6 +16,7 @@ def index(request):
     return render(request, 'turk/index.html', context)
 
 
+# profile page
 def detail(request, profile_id):
     profile = get_object_or_404(Profile, pk=profile_id)
     return render(request, 'turk/detail.html',  {'profile': profile})

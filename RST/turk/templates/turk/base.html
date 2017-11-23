@@ -28,9 +28,10 @@
         <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
 
+            {% if user.is_authenticated %}
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="{% url 'turk:index' %}">
+                    <a href="{% url 'turk:detail' request.user.id %}">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
                         Profile
                     </a>
@@ -39,20 +40,31 @@
 
             <ul class="nav navbar-nav navbar-left">
                 <li class="">
-                    <a href="{% url 'turk:create_job' 1 %}"> <!-- TODO: profile.id currently hard coded. Needs fix -->
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+                    <a href="{% url 'turk:create_job' request.user.id %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
                         Create Job
                     </a>
                 </li>
             </ul>
-            
-            <ul class="nav navbar-nav navbar-right">
-                <li class="">
-                    <a href="{% url 'turk:logout_user' %}">
-                        <span class ="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
-                    </a>
-                </li>
-            </ul>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="{% url 'turk:logout_user' %}">
+                            <span class ="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
+                        </a>
+                    </li>
+                </ul>
+            {% else %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="{% url 'turk:login_user' %}">
+                            <span class ="glyphicon glyphicon-leaf" aria-hidden="true"></span>&nbsp; Login
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
 
         </div>
 
