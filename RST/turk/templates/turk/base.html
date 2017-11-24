@@ -57,13 +57,16 @@
                     </li>
                 </ul>
             {% else %}
+            <!--
                 <ul class="nav navbar-nav navbar-right">
                     <li class="">
                         <a href="{% url 'turk:login_user' %}">
-                            <span class ="glyphicon glyphicon-leaf" aria-hidden="true"></span>&nbsp; Login
+                            <span class ="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp; Login
                         </a>
                     </li>
                 </ul>
+                -->
+            <p class="navbar-brand navbar-right"><a href="{% url 'turk:login_user' %}"> Your are Currently a Visitor. Click here to Login</a></p>
             {% endif %}
 
         </div>

@@ -1,8 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 
 class Profile(models.Model):
+    user = models.ForeignKey(User, default=1)
     name = models.CharField(max_length=250)
     age = models.IntegerField()
     gender = models.BinaryField()
