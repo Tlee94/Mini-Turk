@@ -10,7 +10,9 @@
         <h3> Here are all jobs </h3>
 
         {% for job in all_jobs %}
-            <p><a href = "{% url 'turk:job_description' job.profile.id job.id %}">{{ job.job_title }}</a></p>
+            <p><a href = "{% url 'turk:job_description' job.profile.user.id job.id %}">{{ job.job_title }}</a>
+            {{job.profile.user.first_name}} id:{{job.profile.user.id}}
+            </p>
         {% endfor %}
 
         {% else %}

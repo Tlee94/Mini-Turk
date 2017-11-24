@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views import generic
 from django.views.generic import View
 from .forms import JobForm, UserForm
+from django.contrib.auth.models import User
 
 
 # home page
@@ -17,29 +18,32 @@ def index(request):
 
 
 # profile page
-def detail(request, profile_id):
-    profile = get_object_or_404(Profile, pk=profile_id)
-    return render(request, 'turk/detail.html',  {'profile': profile})
+def detail(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    return render(request, 'turk/detail.html',  {'user': user})
 
 
-def job_description(request, profile_id, job_id):
-    profile = get_object_or_404(Profile, pk=profile_id)
+def job_description(request, user_id, job_id):
+    user = get_object_or_404(User, pk=user_id)
     job = Job.objects.get(pk=job_id)
     context = {
-        'profile': profile,
+        'user': user,
         'job': job,
     }
     return render(request, 'turk/job_description.html', context)
 
 
-def create_job(request, profile_id):
-    profile = get_object_or_404(Profile, pk=profile_id)
-    form = JobForm()
-    context = {
-        'profile': profile,
-        'form': form,
-    }
-    return render(request, 'turk/create_job.html', context)
+def create_job(request, user_id):
+    if not request.user.is_authenticated():
+        return render(request, 'turk/login.html')
+    else:
+        user = get_object_or_404(User, pk=user_id)
+        form = JobForm()
+        context = {
+            'user': user,
+            'form': form,
+        }
+        return render(request, 'turk/create_job.html', context)
     # profile = get_object_or_404(Profile, pk=profile_id)
     # return render(request, 'turk/create_job.html', {'profile': profile})
 

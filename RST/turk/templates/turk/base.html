@@ -31,7 +31,7 @@
             {% if user.is_authenticated %}
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="{% url 'turk:detail' request.user.id %}">
+                    <a href="{% url 'turk:detail' user.id %}">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
                         Profile
                     </a>
@@ -40,7 +40,7 @@
 
             <ul class="nav navbar-nav navbar-left">
                 <li class="">
-                    <a href="{% url 'turk:create_job' request.user.id %}">
+                    <a href="{% url 'turk:create_job' user.id %}">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
                         Create Job
                     </a>

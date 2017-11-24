@@ -2,19 +2,22 @@
 {% extends 'turk/base.html' %}
 
 {% block body %}
-    <h1>{{ profile.user.first_name }}</h1>
-    <h3>id: {{profile.user.id}}</h3>
-    <h3>{{ profile.email }}</h3>
+    <h1>{{ user.first_name }}</h1>
+    <h3>id: {{user.id}}</h3>
+    <h3>{{ user.email }}</h3>
 
     {% if user.is_authenticated %}
-    <form action="{% url 'turk:create_job' profile.id %}">
+    <form action="{% url 'turk:create_job' user.id %}">
         <input type="submit" value="Create New Job">
     </form>
     {% endif %}
 
     <ul>
-        {% for job in profile.job_set.all %}
-        <li><a href = "{% url 'turk:job_description' job.profile.id job.id %}">{{ job.job_title }}</a></li>
+        {% for profile in user.profile_set.all %}
+            {{profile.name}}
+            {% for job in profile.job_set.all %}
+                <li><a href = "{% url 'turk:job_description' job.profile.user.id job.id %}">{{ job.job_title }}</a></li>
+            {% endfor %}
         {% endfor %}
     </ul>
 {% endblock %}
