@@ -2,14 +2,17 @@
 {% extends 'turk/base.html' %}
 
 {% block body %}
-    <h1>{{ user.first_name }}</h1>
+    {% if user.profile.name %}
+        <h1>{{ user.profile.name}}</h1>
+    {% else %}
+        <h1> {{user.first_name}} </h1>
+    {% endif %}
     <h3>id: {{user.id}}</h3>
     <h3>{{ user.email }}</h3>
-
-    {% if user.is_authenticated %}
-    <form action="{% url 'turk:create_job' user.id %}">
-        <input type="submit" value="Create New Job">
-    </form>
+    {% if user.profile.isClient == True%}
+        <h3>Client</h3>
+    {% else %}
+        <h3>Developer</h3>
     {% endif %}
 
     <ul>

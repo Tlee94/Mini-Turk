@@ -4,13 +4,14 @@ from django.core.urlresolvers import reverse
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, default=1)
+    user = models.OneToOneField(User, default=1)
     name = models.CharField(max_length=250)
     age = models.IntegerField()
     gender = models.BinaryField()
     email = models.CharField(max_length=250)
     rating = models.FloatField()
     money = models.FloatField()
+    isClient = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
