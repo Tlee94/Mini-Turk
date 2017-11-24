@@ -13,11 +13,8 @@
     {% endif %}
 
     <ul>
-        {% for profile in user.profile_set.all %}
-            {{profile.name}}
-            {% for job in profile.job_set.all %}
-                <li><a href = "{% url 'turk:job_description' job.profile.user.id job.id %}">{{ job.job_title }}</a></li>
-            {% endfor %}
+        {% for job in user.job_set.all %}
+            <li><a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

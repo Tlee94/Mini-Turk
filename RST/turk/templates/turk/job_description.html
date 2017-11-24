@@ -5,7 +5,7 @@
     <h1>Job Desciption</h1>
 
 
-    <p><a href = "{% url 'turk:detail' job.profile.user.id %}">{{ job.profile.user.first_name }}</a>
+    <p><a href = "{% url 'turk:detail' job.user.id %}">{{ job.user.first_name }}</a>
     id:{{job.profile.user.id}}
     </p>
     <p>{{ job.job_title }}</p>

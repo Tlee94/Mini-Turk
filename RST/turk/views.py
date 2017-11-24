@@ -34,11 +34,17 @@ def job_description(request, user_id, job_id):
 
 
 def create_job(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
     if not request.user.is_authenticated():
         return render(request, 'turk/login.html')
     else:
         user = get_object_or_404(User, pk=user_id)
-        form = JobForm()
+        form = JobForm(request.POST or None)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.user = user
+            job.save()
+            return render(request, 'turk/detail.html', {'user': user})
         context = {
             'user': user,
             'form': form,
