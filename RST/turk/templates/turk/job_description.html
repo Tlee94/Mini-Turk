@@ -31,10 +31,14 @@
 
                         {% if request.user.profile.isClient == False %}
                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-success">Bid</button>
-                                </div>
+
+                                    <div class="col-xs-2">
+                                        <label for="ex1">Place your bid here</label>
+                                        <input class="form-control" id="ex1" type="text">
+                                        <button type="submit" class="btn btn-success">Bid</button>
+                                    </div>
                             </div>
                         </form>
                         {% endif %}

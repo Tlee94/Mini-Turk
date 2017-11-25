@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Profile, Job
+from .models import Profile, Job, Bidder
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
 from django.views.generic import View
-from .forms import JobForm, UserForm
+from .forms import JobForm, UserForm, BidForm
 from django.contrib.auth.models import User
 
 
@@ -29,12 +29,28 @@ def job_description(request, user_id, job_id):
     context = {
         'user': user,
         'job': job,
+        'lowest_bid': job.lowest_bid,
     }
     return render(request, 'turk/job_description.html', context)
 
 
-def create_job(request, user_id):
+#not working, needs fixing
+def create_bid(request, user_id, job_id):
     user = get_object_or_404(User, pk=user_id)
+    job = Job.object.get(pk=job_id)
+    form = BidForm(request.POST or None)
+    context = {
+        'user': user,
+        'job': job,
+    }
+    if form.is_valid():
+        bid = form.save(commit=False)
+        bid.job = job
+        bid.save()
+    return render(request, 'turk/job_description.html', context)
+
+
+def create_job(request, user_id):
     if not request.user.is_authenticated():
         return render(request, 'turk/login.html')
     else:

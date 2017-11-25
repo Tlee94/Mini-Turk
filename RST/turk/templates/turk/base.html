@@ -28,7 +28,7 @@
         <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
 
-            {% if user.is_authenticated %}
+            {% if request.user.is_authenticated %}
             <ul class="nav navbar-nav">
                 <li class="active">
                     <a href="{% url 'turk:detail' request.user.id %}">
@@ -40,7 +40,7 @@
 
             <ul class="nav navbar-nav navbar-left">
                 <li class="">
-                    <a href="{% url 'turk:create_job' user.id %}">
+                    <a href="{% url 'turk:create_job' request.user.id %}">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
                         Create Job
                     </a>

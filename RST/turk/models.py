@@ -31,11 +31,10 @@ class Job(models.Model):
         return self.job_title
 
 
-class Bidders(models.Model):
+class Bidder(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
-    bidder_name = models.CharField(max_length=250)
     price = models.FloatField(default=0)
 
     def __str__(self):
-        return self.bidder_name
+        return str(self.price)
 
