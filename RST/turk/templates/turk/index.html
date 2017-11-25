@@ -2,10 +2,6 @@
 {% extends 'turk/base.html' %}
 
 {% block body %}
-    {% if user.is_authenticated %}
-        You are logged in as {{ user.first_name }} with id: {{user.id}}
-    {% endif %}
-
     {% if all_jobs %}
         <h3> Here are all jobs </h3>
 

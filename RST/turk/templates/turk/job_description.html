@@ -1,13 +1,51 @@
 <!-- job description -->
 {% extends 'turk/base.html' %}
 
+
 {% block body %}
-    <h1>Job Desciption</h1>
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-sm-12 col-md-7">
+                <div class="=panel panel-default">
+                    <div class="panel-body">
+                        <h1>Job Desciption</h1>
 
 
-    <p><a href = "{% url 'turk:detail' job.user.id %}">{{ job.user.first_name }}</a>
-    id:{{job.user.id}}
-    </p>
-    <p>{{ job.job_title }}</p>
-    <p>{{job.job_description}}</p>
+                        <p><a href = "{% url 'turk:detail' job.user.id %}">{{ job.user.first_name }}</a>
+                        id:{{job.user.id}}
+                        </p>
+                        <p>{{ job.job_title }}</p>
+                        <p>{{job.job_description}}</p>
+
+                        {% if job.lowest_bid == -1 %}
+                            <p>Current Lowest Bid: NONE</p>
+                        {% else %}
+                            <p>Current Lowest Bid: {{ job.lowest_bid }}</p>
+                        {% endif %}
+
+                        <p>Profile Client: {{user.profile.isClient}}</p>
+                        <p>Login Client: {{ request.user.profile.isClient }}</p>
+
+                        {% if request.user.profile.isClient == False %}
+                        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-success">Bid</button>
+                                </div>
+                            </div>
+                        </form>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
 {% endblock %}
