@@ -10,6 +10,7 @@
     <h3>user id: {{user.id}}</h3>
     <h3>profile id: {{user.profile.id}}</h3>
     <h3>{{ user.profile.email }}</h3>
+    <h3>{{ user.profile.gender }}</h3>
     {% if user.profile.isClient == True%}
         <h3>Client</h3>
     {% else %}

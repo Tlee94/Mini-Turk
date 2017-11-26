@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="39b2e041-a73c-4a20-ae35-0a4738cc6a9b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RST/turk/templates/turk/job_confirm_delete.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RST/turk/templates/turk/profile_form.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/db.sqlite3" afterPath="$PROJECT_DIR$/RST/db.sqlite3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/turk/forms.py" afterPath="$PROJECT_DIR$/RST/turk/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/turk/models.py" afterPath="$PROJECT_DIR$/RST/turk/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/turk/templates/turk/detail.html" afterPath="$PROJECT_DIR$/RST/turk/templates/turk/detail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/turk/templates/turk/job_description.html" afterPath="$PROJECT_DIR$/RST/turk/templates/turk/job_description.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/turk/urls.py" afterPath="$PROJECT_DIR$/RST/turk/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/turk/views.py" afterPath="$PROJECT_DIR$/RST/turk/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,12 +29,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RST/turk/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="3" lean-forward="true" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
-              <folding />
+            <state relative-caret-position="210">
+              <caret line="14" column="42" lean-forward="false" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -56,8 +54,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RST/turk/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="120" column="49" lean-forward="true" selection-start-line="120" selection-start-column="49" selection-end-line="120" selection-end-column="49" />
+            <state relative-caret-position="266">
+              <caret line="100" column="45" lean-forward="true" selection-start-line="100" selection-start-column="45" selection-end-line="100" selection-end-column="45" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
               </folding>
@@ -65,7 +63,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="job_confirm_delete.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="job_confirm_delete.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RST/turk/templates/turk/job_confirm_delete.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="45">
@@ -78,8 +76,8 @@
       <file leaf-file-name="detail.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RST/turk/templates/turk/detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="41" lean-forward="true" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
+            <state relative-caret-position="60">
+              <caret line="4" column="30" lean-forward="true" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -157,15 +155,15 @@
         <option value="$PROJECT_DIR$/RST/turk/admin.py" />
         <option value="$PROJECT_DIR$/RST/turk/templates/turk/create_bid.html.py" />
         <option value="$PROJECT_DIR$/RST/turk/templates/turk/create_bid.html" />
-        <option value="$PROJECT_DIR$/RST/turk/models.py" />
         <option value="$PROJECT_DIR$/RST/turk/templates/turk/fill_info.html" />
         <option value="$PROJECT_DIR$/RST/turk/forms.py" />
         <option value="$PROJECT_DIR$/RST/turk/templates/turk/profile_form.html" />
-        <option value="$PROJECT_DIR$/RST/turk/templates/turk/detail.html" />
         <option value="$PROJECT_DIR$/RST/turk/urls.py" />
-        <option value="$PROJECT_DIR$/RST/turk/views.py" />
         <option value="$PROJECT_DIR$/RST/turk/templates/turk/job_confirm_delete.html" />
         <option value="$PROJECT_DIR$/RST/turk/templates/turk/job_description.html" />
+        <option value="$PROJECT_DIR$/RST/turk/views.py" />
+        <option value="$PROJECT_DIR$/RST/turk/templates/turk/detail.html" />
+        <option value="$PROJECT_DIR$/RST/turk/models.py" />
       </list>
     </option>
   </component>
@@ -420,14 +418,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RST/turk/templates/turk/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="20" lean-forward="true" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RST/turk/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -446,10 +436,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RST/turk/models.py">
+    <entry file="file://$PROJECT_DIR$/RST/turk/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="3" lean-forward="true" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
+        <state relative-caret-position="180">
+          <caret line="13" column="63" lean-forward="true" selection-start-line="13" selection-start-column="63" selection-end-line="13" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RST/turk/templates/turk/job_confirm_delete.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="7" lean-forward="true" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
           <folding />
         </state>
       </provider>
@@ -462,32 +460,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RST/turk/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="13" column="63" lean-forward="true" selection-start-line="13" selection-start-column="63" selection-end-line="13" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RST/turk/templates/turk/detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="41" lean-forward="true" selection-start-line="19" selection-start-column="41" selection-end-line="19" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RST/turk/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="120" column="49" lean-forward="true" selection-start-line="120" selection-start-column="49" selection-end-line="120" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RST/turk/templates/turk/job_description.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
@@ -496,11 +468,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RST/turk/templates/turk/job_confirm_delete.html">
+    <entry file="file://$PROJECT_DIR$/RST/turk/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="7" lean-forward="true" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
+        <state relative-caret-position="266">
+          <caret line="100" column="45" lean-forward="true" selection-start-line="100" selection-start-column="45" selection-end-line="100" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RST/turk/templates/turk/detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="30" lean-forward="true" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RST/turk/templates/turk/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="20" lean-forward="true" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RST/turk/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="42" lean-forward="false" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

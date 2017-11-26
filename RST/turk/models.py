@@ -7,7 +7,12 @@ class Profile(models.Model):
     user = models.OneToOneField(User, default=1)
     name = models.CharField(max_length=250)
     age = models.IntegerField(default=0)
-    gender = models.BinaryField(default=1) # 1 = male 0 = female
+    #gender = models.BinaryField(default=1) # 1 = male 0 = female
+    GENDER_CHOICES = (
+        ('Male', 'Male'),
+        ('Female', 'Female')
+    )
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Male')
     email = models.CharField(max_length=250)
     rating = models.FloatField(default=5)
     money = models.FloatField(default=0)

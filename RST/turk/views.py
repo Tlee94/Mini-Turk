@@ -103,7 +103,7 @@ def login_user(request):
 
 class UpdateProfile(UpdateView):
     model = Profile
-    fields = ['name', 'email', 'age']
+    fields = ['name', 'email', 'age', 'gender']
     success_url = reverse_lazy('turk:index')
     #success_url = reverse_lazy('turk:detail', args=[id])
 
