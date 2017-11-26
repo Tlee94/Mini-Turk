@@ -17,12 +17,19 @@ urlpatterns = [
     url(r'^logout_user/$', views.logout_user, name='logout_user'),
 
     # profile page
-    url(r'^(?P<user_id>[0-9]+)/$', views.detail, name='detail'),
+    url(r'^profile/(?P<user_id>[0-9]+)/$', views.detail, name='detail'),
 
     # job description page
-    url(r'^(?P<user_id>[0-9]+)/job/(?P<job_id>[0-9]+)/$', views.job_description, name='job_description'),
+    url(r'^profile/(?P<user_id>[0-9]+)/job/(?P<job_id>[0-9]+)/$', views.job_description, name='job_description'),
 
     # create job page
-    # may need to to user id????
-    url(r'^(?P<user_id>[0-9]+)/create_job/$', views.create_job, name='create_job'),
+    url(r'^profile/(?P<user_id>[0-9]+)/create_job/$', views.create_job, name='create_job'),
+
+    # update profile page
+    url(r'^profile/(?P<user_id>[0-9]+)/UpdateProfile/(?P<pk>[0-9]+)$', views.UpdateProfile.as_view(),
+        name='update_profile'),
+
+    # delete job
+    url(r'^profile/(?P<user_id>[0-9]+)/DeleteJob/(?P<pk>[0-9]+)/delete/$', views.JobDelete.as_view(),
+        name='delete_job'),
 ]

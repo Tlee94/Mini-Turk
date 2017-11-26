@@ -7,8 +7,9 @@
     {% else %}
         <h1> {{user.first_name}} </h1>
     {% endif %}
-    <h3>id: {{user.id}}</h3>
-    <h3>{{ user.email }}</h3>
+    <h3>user id: {{user.id}}</h3>
+    <h3>profile id: {{user.profile.id}}</h3>
+    <h3>{{ user.profile.email }}</h3>
     {% if user.profile.isClient == True%}
         <h3>Client</h3>
     {% else %}
@@ -20,4 +21,9 @@
             <li><a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a></li>
         {% endfor %}
     </ul>
+
+    {% if request.user.id == user.id %}
+        <a href = "{% url 'turk:update_profile' user.id user.profile.id %}">Click here to edit profile</a>
+    {% endif %}
+
 {% endblock %}

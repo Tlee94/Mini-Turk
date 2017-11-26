@@ -4,9 +4,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
 from django.views.generic import View
-from .forms import JobForm, UserForm, BidForm
+from .forms import JobForm, UserForm, BidForm, ProfileForm
 from django.contrib.auth.models import User
+from django.views.generic.edit import UpdateView, DeleteView
+from django.core.urlresolvers import reverse_lazy, reverse
 
+#url - views - html
 
 # home page
 def index(request):
@@ -33,22 +36,24 @@ def job_description(request, user_id, job_id):
     }
     return render(request, 'turk/job_description.html', context)
 
-
-#not working, needs fixing
-def create_bid(request, user_id, job_id):
+'''
+def job_description(request, user_id, job_id):
     user = get_object_or_404(User, pk=user_id)
-    job = Job.object.get(pk=job_id)
-    form = BidForm(request.POST or None)
+    job = Job.objects.get(pk=job_id)
+    lowest_bid = 10000000
+
     context = {
         'user': user,
         'job': job,
+        'lowest_bid': lowest_bid,
     }
+    form = BidForm(request.POST or None)
     if form.is_valid():
         bid = form.save(commit=False)
         bid.job = job
         bid.save()
     return render(request, 'turk/job_description.html', context)
-
+    '''
 
 def create_job(request, user_id):
     if not request.user.is_authenticated():
@@ -68,7 +73,6 @@ def create_job(request, user_id):
         return render(request, 'turk/create_job.html', context)
     # profile = get_object_or_404(Profile, pk=profile_id)
     # return render(request, 'turk/create_job.html', {'profile': profile})
-
 
 def logout_user(request):
     logout(request)
@@ -95,6 +99,21 @@ def login_user(request):
         else:
             return render(request, 'turk/login.html', {'error_message': 'Invalid Login'})
     return render(request, 'turk/login.html')
+
+
+class UpdateProfile(UpdateView):
+    model = Profile
+    fields = ['name', 'email', 'age']
+    success_url = reverse_lazy('turk:index')
+    #success_url = reverse_lazy('turk:detail', args=[id])
+
+
+class JobDelete(DeleteView):
+    model = Job
+
+    def get_success_url(self):
+        return reverse('turk:index')
+    #success_url = reverse_lazy('turk:index')
 
 
 class UserFormView(View):

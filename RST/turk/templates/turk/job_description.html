@@ -20,27 +20,12 @@
                         <p>{{ job.job_title }}</p>
                         <p>{{job.job_description}}</p>
 
-                        {% if job.lowest_bid == -1 %}
-                            <p>Current Lowest Bid: NONE</p>
-                        {% else %}
-                            <p>Current Lowest Bid: {{ job.lowest_bid }}</p>
-                        {% endif %}
 
                         <p>Profile Client: {{user.profile.isClient}}</p>
                         <p>Login Client: {{ request.user.profile.isClient }}</p>
 
-                        {% if request.user.profile.isClient == False %}
-                        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="form-group">
-
-                                    <div class="col-xs-2">
-                                        <label for="ex1">Place your bid here</label>
-                                        <input class="form-control" id="ex1" type="text">
-                                        <button type="submit" class="btn btn-success">Bid</button>
-                                    </div>
-                            </div>
-                        </form>
+                        {% if request.user.id == user.id %}
+                            <a href = "{% url 'turk:delete_job' user.id job.id %}">Delete</a>
                         {% endif %}
 
                     </div>

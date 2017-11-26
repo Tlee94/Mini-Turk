@@ -3,6 +3,15 @@ from django import forms
 from .models import Profile, Job, Bidder
 
 
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        #fields = ['name', 'age', 'email', 'money']
+        fields = []
+        #need to add uploading picture, resume etc...
+
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
 
