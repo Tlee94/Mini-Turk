@@ -32,4 +32,8 @@ urlpatterns = [
     # delete job
     url(r'^profile/(?P<user_id>[0-9]+)/DeleteJob/(?P<pk>[0-9]+)/delete/$', views.JobDelete.as_view(),
         name='delete_job'),
+
+    # form to superuser page
+    url(r'^profile/(?P<user_id>[0-9]+)/ftsu/$', views.form_to_superuser, name='form_to_superuser'),
+
 ]

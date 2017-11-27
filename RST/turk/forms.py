@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import Profile, Job, Bidder
+from .models import Profile, Job, Bidder, FormToSuperUser
 
 
 class ProfileForm(forms.ModelForm):
@@ -32,4 +32,11 @@ class BidForm(forms.ModelForm):
     class Meta:
         model = Bidder
         fields = ['price']
+
+
+class FormToSuperUser(forms.ModelForm):
+
+    class Meta:
+        model = FormToSuperUser
+        fields = ['reason', 'writing']
 
