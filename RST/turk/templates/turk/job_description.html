@@ -18,13 +18,22 @@
                         id:{{job.user.id}}
                         </p>
                         <p>{{ job.job_title }}</p>
-                        <p>{{ job.job_description}}</p>
+                        <p>{{ job.job_description}}</p><br>
 
                         {% if job.lowest_bid > 0 %}
                         <p>Lowest Bid: {{ job.lowest_bid }}</p>
                         {% else %}
                         <p>Lowest Bid: None</p>
                         {% endif %}
+
+                        {% if job.bidder_set.all %}
+                            <p>List of current bidders:</p>
+                            {% for bidder in job.bidder_set.all %}
+                            <p>{{bidder.user.username}}: {{bidder.price}}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>List of current bidders: NONE</p>
+                        {% endif %}<br>
 
                         <p>Profile Client: {{user.profile.isClient}}</p>
                         <p>Login Client: {{ request.user.profile.isClient }}</p>
