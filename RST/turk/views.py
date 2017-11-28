@@ -25,7 +25,7 @@ def detail(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     return render(request, 'turk/detail.html',  {'user': user})
 
-
+'''
 def job_description(request, user_id, job_id):
     user = get_object_or_404(User, pk=user_id)
     job = Job.objects.get(pk=job_id)
@@ -33,6 +33,32 @@ def job_description(request, user_id, job_id):
         'user': user,
         'job': job,
         'lowest_bid': job.lowest_bid,
+    }
+    return render(request, 'turk/job_description.html', context)
+    '''
+
+
+def job_description(request, user_id, job_id):
+    user = get_object_or_404(User, pk=user_id)
+    job = Job.objects.get(pk=job_id)
+
+    bid_list = job.bidder_set.all()
+    lowest_bid = -1
+    count = job.bidder_set.count()
+
+    if count > 0:
+        lowest_bid = bid_list[0].price
+        for bid in bid_list:
+            if bid.price < lowest_bid:
+                lowest_bid = bid.price
+        '''for i in range(0, count):
+            if bid_list[i].price < lowest_bid:
+                lowest_bid = bid_list[i].price'''
+        job.lowest_bid = lowest_bid
+
+    context = {
+        'user': user,
+        'job': job,
     }
     return render(request, 'turk/job_description.html', context)
 

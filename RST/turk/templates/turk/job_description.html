@@ -14,12 +14,17 @@
                         <h1>Job Desciption</h1>
 
 
-                        <p><a href = "{% url 'turk:detail' job.user.id %}">{{ job.user.first_name }}</a>
+                        <p><a href = "{% url 'turk:detail' job.user.id %}">{{ job.user.username }}</a>
                         id:{{job.user.id}}
                         </p>
                         <p>{{ job.job_title }}</p>
-                        <p>{{job.job_description}}</p>
+                        <p>{{ job.job_description}}</p>
 
+                        {% if job.lowest_bid > 0 %}
+                        <p>Lowest Bid: {{ job.lowest_bid }}</p>
+                        {% else %}
+                        <p>Lowest Bid: None</p>
+                        {% endif %}
 
                         <p>Profile Client: {{user.profile.isClient}}</p>
                         <p>Login Client: {{ request.user.profile.isClient }}</p>
