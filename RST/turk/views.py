@@ -195,18 +195,22 @@ class UserFormView(View):
             username = form.cleaned_data['username'] # 'username' = field
             password = form.cleaned_data['password']
             user.set_password(password)
-            user.is_active = False
+            #user.is_active = False
             user.save()
+            profile = Profile(name=username)
+            profile.user = user
+            profile.save()
 
             # request User objects if credentials are correct
             user = authenticate(username=username, password=password)
-            if user is None:
-                all_jobs = Job.objects.all()
-                context = {
-                    'all_jobs': all_jobs,
-                }
-                return render(request, 'turk/index.html', context)
-
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    all_jobs = Job.objects.all()
+                    context = {
+                        'all_jobs': all_jobs,
+                    }
+                    return render(request, 'turk/index.html', context)
         return render(request, self.template_name, {'form': form})
 
 
