@@ -36,4 +36,7 @@ urlpatterns = [
     # form to superuser page
     url(r'^profile/(?P<user_id>[0-9]+)/ftsu/$', views.form_to_superuser, name='form_to_superuser'),
 
+    # bid on job
+    url(r'^profile/(?P<user_id>[0-9]+)/job/(?P<job_id>[0-9]+)/bid/$', views.bid, name='bid'),
+
 ]

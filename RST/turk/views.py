@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
 from django.views.generic import View
-from .forms import JobForm, UserForm, FormToSuperUser
+from .forms import JobForm, UserForm, FormToSuperUser, BidForm
 from django.contrib.auth.models import User
 from django.views.generic.edit import UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy, reverse
@@ -62,7 +62,8 @@ def create_job(request, user_id):
             job = form.save(commit=False)
             job.user = user
             job.save()
-            return render(request, 'turk/detail.html', {'user': user})
+            return redirect('turk:detail', user_id=user_id)
+            #return render(request, 'turk/detail.html', {'user': user})
         context = {
             'user': user,
             'form': form,
@@ -70,6 +71,48 @@ def create_job(request, user_id):
         return render(request, 'turk/create_job.html', context)
     # profile = get_object_or_404(Profile, pk=profile_id)
     # return render(request, 'turk/create_job.html', {'profile': profile})
+
+
+def bid(request, user_id, job_id):
+    if not request.user.is_authenticated():
+        return render(request, 'turk/login.html')
+    else:
+        user = get_object_or_404(User, pk=user_id)
+        job = get_object_or_404(Job, pk=job_id)
+        form = BidForm(request.POST or None)
+        context = {
+            'user': user,
+            'job': job,
+            'form': form,
+        }
+        if form.is_valid():
+            _bid = form.save(commit=False)
+            _bid.user = user
+            _bid.job = job
+            _bid.save()
+            return redirect('turk:job_description', user_id=user_id, job_id=job_id)
+            #return render(request, 'turk/job_description.html', context)
+
+        return render(request, 'turk/bid.html', context)
+    '''
+    if not request.user.is_authenticated():
+        return render(request, 'turk/login.html')
+    else:
+        user = get_object_or_404(User, pk=user_id)
+        job = get_object_or_404(Job, pk=job_id)
+        form = BidForm(request.POST or None)
+        if form.is_valid():
+            _bid = form.save(commit=False)
+            _bid.user = user
+            _bid.job = job
+            job.save()
+            return render(request, 'turk/job_description.html', {'user': user, 'job': job})
+        context = {
+            'user': user,
+            'job': job,
+            'form': form,
+        }
+        return render(request, 'turk/bid.html', context)'''
 
 
 def form_to_superuser(request, user_id):
@@ -165,4 +208,6 @@ class UserFormView(View):
                 return render(request, 'turk/index.html', context)
 
         return render(request, self.template_name, {'form': form})
+
+
 
