@@ -210,7 +210,10 @@ class UserFormView(View):
                     context = {
                         'all_jobs': all_jobs,
                     }
-                    return render(request, 'turk/index.html', context)
+                    return redirect('turk:update_profile', user_id=user.id, pk=profile.id)
+                    #return redirect('turk:job_description', user_id=user_id, job_id=job_id)
+                    #return render(request, 'turk/index.html', context)
+
         return render(request, self.template_name, {'form': form})
 
 

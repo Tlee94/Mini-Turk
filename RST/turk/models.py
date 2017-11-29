@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, default=1)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     name = models.CharField(max_length=250)
     age = models.IntegerField(default=0)
     #gender = models.BinaryField(default=1) # 1 = male 0 = female
@@ -24,7 +24,7 @@ class Profile(models.Model):
 
 class Job(models.Model):
     # profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     job_title = models.CharField(max_length=250)
     job_description = models.TextField()
     is_complete = models.BooleanField(default=False)
@@ -46,7 +46,7 @@ class Bidder(models.Model):
 
 
 class FormToSuperUser(models.Model):
-    user = models.ForeignKey(User, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     writing = models.TextField()
     REASON_OPTIONS = (
         ('Not_lowest_bid', 'Not_lowest_bid'),
