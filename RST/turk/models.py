@@ -22,7 +22,8 @@ class Profile(models.Model):
         ('Developer', 'Developer'),
     )
     position = models.CharField(max_length=9, choices=POSITION_CHOICES, default='Temporary')
-    isClient = models.BooleanField(default=True)
+    profile_picture = models.FileField()
+    #isClient = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

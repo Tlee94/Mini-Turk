@@ -2,17 +2,36 @@
 {% extends 'turk/base.html' %}
 
 {% block body %}
-    {% if user.profile.name %}
-        <h1>{{ user.profile.name}}</h1>
-    {% else %}
-        <h1> {{user.first_name}} </h1>
-    {% endif %}
-    <h3>user id: {{user.id}}</h3>
-    <h3>profile id: {{user.profile.id}}</h3>
-    <h3>email: {{ user.profile.email }}</h3>
-    <h3>gender: {{ user.profile.gender }}</h3>
-    <h3>money: {{ user.profile.money }}</h3>
-    <h3>position: {{ user.profile.position }} </h3>
+
+
+
+    <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if user.profile.profile_picture %}
+                        <img src="{{ user.profile.profile_picture.url }}" class="img-responsive">
+                    {% else %}
+                        <h3>No image to display</h3>
+                    {% endif %}
+                    
+                    {% if user.profile.name %}
+                        <h1>{{ user.profile.name}}</h1>
+                    {% else %}
+                        <h1> {{user.first_name}} </h1>
+                    {% endif %}
+                    <h3>user id: {{user.id}}</h3>
+                    <h3>profile id: {{user.profile.id}}</h3>
+                    <h3>email: {{ user.profile.email }}</h3>
+                    <h3>gender: {{ user.profile.gender }}</h3>
+                    <h3>money: {{ user.profile.money }}</h3>
+                    <h3>position: {{ user.profile.position }} </h3>
+                </div>
+            </div>
+        </div>
+
+
+
+
 
     <ul>
         {% for job in user.job_set.all %}
