@@ -13,7 +13,7 @@
                     {% else %}
                         <h3>No image to display</h3>
                     {% endif %}
-                    
+
                     {% if user.profile.name %}
                         <h1>{{ user.profile.name}}</h1>
                     {% else %}
@@ -25,6 +25,7 @@
                     <h3>gender: {{ user.profile.gender }}</h3>
                     <h3>money: {{ user.profile.money }}</h3>
                     <h3>position: {{ user.profile.position }} </h3>
+                    <h3>interest: {{ user.profile.interest }}</h3>
                 </div>
             </div>
         </div>
@@ -35,7 +36,9 @@
 
     <ul>
         {% for job in user.job_set.all %}
-            <li><a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a></li>
+            <li><a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a>
+            bid deadline: {{job.bid_deadline}}
+            </li>
         {% endfor %}
     </ul>
 

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
+from datetime import datetime, timedelta
 
 
 class Profile(models.Model):
@@ -22,7 +22,8 @@ class Profile(models.Model):
         ('Developer', 'Developer'),
     )
     position = models.CharField(max_length=9, choices=POSITION_CHOICES, default='Temporary')
-    profile_picture = models.FileField()
+    profile_picture = models.ImageField()
+    interest = models.TextField()
     #isClient = models.BooleanField(default=True)
 
     def __str__(self):
@@ -37,7 +38,7 @@ class Job(models.Model):
     is_complete = models.BooleanField(default=False)
     is_open = models.BooleanField(default=True) # Job is still open for bid
     lowest_bid = models.FloatField(default=-1)
-    published = models.DateTimeField(default=timezone.now)
+    bid_deadline = models.DateTimeField(default=datetime.now()+timedelta(7))
 
     def __str__(self):
         return self.job_title
