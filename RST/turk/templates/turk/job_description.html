@@ -35,15 +35,15 @@
                             <p>List of current bidders: NONE</p>
                         {% endif %}<br>
 
-                        <p>Profile Client: {{user.profile.isClient}}</p>
-                        <p>Login Client: {{ request.user.profile.isClient }}</p>
+                        <p>Profile position: {{user.profile.position}}</p>
+                        <p>My position: {{ request.user.profile.position }}</p>
 
                         {% if request.user.id == user.id %}
                             <a href = "{% url 'turk:delete_job' user.id job.id %}">Delete</a>
                         {% endif %}
 
                         {% if request.user.is_authenticated %}
-                            {% if not request.user.profile.isClient %}
+                            {% if request.user.profile.position == "Developer" %}
                                 <a href = "{% url 'turk:bid' request.user.id job.id %}">Click Here to Bid</a>
                             {% endif %}
                         {% endif %}

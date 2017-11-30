@@ -39,7 +39,7 @@
                     </li>
                 </ul>
 
-                {% if request.user.profile.isClient %}
+                {% if request.user.profile.position == "Client" %}
                     <ul class="nav navbar-nav navbar-left">
                         <li class="">
                             <a href="{% url 'turk:create_job' request.user.id %}">
@@ -78,7 +78,7 @@
 </nav>
 
 {% if request.user.is_authenticated %}
-    You are logged in as {{ request.user.first_name }} with id: {{request.user.id}}
+    You are logged in as {{ request.user.profile.name }} with id: {{request.user.id}}
 {% endif %}
 
 {% block body %}

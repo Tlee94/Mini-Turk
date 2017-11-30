@@ -12,11 +12,7 @@
     <h3>email: {{ user.profile.email }}</h3>
     <h3>gender: {{ user.profile.gender }}</h3>
     <h3>money: {{ user.profile.money }}</h3>
-    {% if user.profile.isClient == True%}
-        <h3>Client</h3>
-    {% else %}
-        <h3>Developer</h3>
-    {% endif %}
+    <h3>position: {{ user.profile.position }} </h3>
 
     <ul>
         {% for job in user.job_set.all %}

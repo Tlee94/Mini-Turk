@@ -16,6 +16,12 @@ class Profile(models.Model):
     email = models.CharField(max_length=250)
     rating = models.FloatField(default=5)
     money = models.FloatField(default=0)
+    POSITION_CHOICES=(
+        ('Temporary', 'Temporary'),
+        ('Client', 'Client'),
+        ('Developer', 'Developer'),
+    )
+    position = models.CharField(max_length=9, choices=POSITION_CHOICES, default='Temporary')
     isClient = models.BooleanField(default=True)
 
     def __str__(self):
