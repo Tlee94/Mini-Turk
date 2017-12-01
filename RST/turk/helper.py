@@ -1,5 +1,4 @@
-
-def GetLowestBid(job):
+def get_lowest_bid(job):
     bid_list = job.bidder_set.all()
     count = job.bidder_set.count()
 

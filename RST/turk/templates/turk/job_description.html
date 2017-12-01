@@ -14,7 +14,7 @@
                         <h1>Job Desciption</h1>
 
 
-                        <p><a href = "{% url 'turk:detail' job.user.id %}">{{ job.user.username }}</a>
+                        <p><a href = "{% url 'turk:detail' job.user.id %}">{{ job.user.profile.name }}</a>
                         id:{{job.user.id}}
                         </p>
                         <p>{{ job.job_title }}</p>
@@ -26,25 +26,31 @@
                         <p>Lowest Bid: None</p>
                         {% endif %}
 
-                        {% if job.bidder_set.all %}
-                            <p>List of current bidders:</p>
-                            {% for bidder in job.bidder_set.all %}
-                            <p>{{bidder.user.username}}: {{bidder.price}}</p>
-                            {% endfor %}
-                        {% else %}
-                            <p>List of current bidders: NONE</p>
-                        {% endif %}<br>
+                        {% if request.user.id == job.user.id %}
+                            {% if job.bidder_set.all %}
+                                <p>List of current bidders:</p>
+                                {% for bidder in job.bidder_set.all %}
+                                <p>{{bidder.user.username}}: {{bidder.price}}</p>
+                                {% endfor %}
+                            {% else %}
+                                <p>List of current bidders: NONE</p>
+                            {% endif %}<br>
+                        {% endif %}
 
                         <p>Profile position: {{user.profile.position}}</p>
                         <p>My position: {{ request.user.profile.position }}</p>
 
                         {% if request.user.id == user.id %}
-                            <a href = "{% url 'turk:delete_job' user.id job.id %}">Delete</a>
+                            <a href = "{% url 'turk:delete_job' user.id job.id %}">Delete</a><br>
                         {% endif %}
 
                         {% if request.user.is_authenticated %}
                             {% if request.user.profile.position == "Developer" %}
                                 <a href = "{% url 'turk:bid' request.user.id job.id %}">Click Here to Bid</a>
+                            {% endif %}
+
+                            {% if request.user.id == job.user.id %}
+                                <a href = "{% url 'turk:bidder_list' user.id job.id %}">Click Here to View Bids</a>
                             {% endif %}
                         {% endif %}
 

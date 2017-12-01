@@ -35,6 +35,7 @@ class Job(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     job_title = models.CharField(max_length=250)
     job_description = models.TextField()
+    job_price = models.FloatField(default=0)
     is_complete = models.BooleanField(default=False)
     is_open = models.BooleanField(default=True) # Job is still open for bid
     lowest_bid = models.FloatField(default=-1)
@@ -48,9 +49,14 @@ class Bidder(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     price = models.FloatField(default=0)
+    #isSelectedForJob boolean?
 
     def __str__(self):
         return str(self.price)
+
+
+class Developer(models.Model):
+    job = models.OneToOneField(Job, on_delete=models.CASCADE)
 
 
 class FormToSuperUser(models.Model):

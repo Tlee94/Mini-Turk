@@ -78,7 +78,7 @@
 </nav>
 
 {% if request.user.is_authenticated %}
-    You are logged in as {{ request.user.profile.name }} with id: {{request.user.id}}
+    You are logged in as {{ request.user.profile.name }} with id: {{request.user.id}} username: {{request.user.username}}
 {% endif %}
 
 {% block body %}

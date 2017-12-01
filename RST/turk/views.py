@@ -43,13 +43,46 @@ def job_description(request, user_id, job_id):
     user = get_object_or_404(User, pk=user_id)
     job = Job.objects.get(pk=job_id)
 
-    GetLowestBid(job)
+    get_lowest_bid(job)
 
     context = {
         'user': user,
         'job': job,
     }
     return render(request, 'turk/job_description.html', context)
+
+
+def bidder_list(request, user_id, job_id):
+    user = get_object_or_404(User, pk=user_id)
+    job = Job.objects.get(pk=job_id)
+    bid_list = job.bidder_set.all().order_by('price')
+    context = {
+        'user': user,
+        'job': job,
+        'bid_list': bid_list,
+    }
+    if request.method == 'POST':
+        bidderInfo = request.POST.get('bidder').split(',')
+        print("bidderInfo: ",bidderInfo)
+        bidder_user_id = bidderInfo[0]
+        bidPrice = float(bidderInfo[1])
+        print("bidder user id: ",bidder_user_id)
+        print("bid price: ",bidPrice)
+        bidderUser = get_object_or_404(User, pk=bidder_user_id) #pay money to this guy
+        print(bidderUser.username)
+        initial_payment = bidPrice/2
+        print("initial payment: ", initial_payment)
+        print("bidder user prof money:", bidderUser.profile.money)
+        print("client user money: ", user.profile.money)
+        bidderUser.profile.money += initial_payment
+        user.profile.money -= initial_payment
+        bidderUser.profile.save()
+        user.profile.save()
+        print("bidder user prof money after:", bidderUser.profile.money)
+        print("client user money after: ", user.profile.money)
+        return redirect('turk:detail', user_id=user_id)
+
+    return render(request, 'turk/bidder_list.html', context)
 
 
 def create_job(request, user_id):
