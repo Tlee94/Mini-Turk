@@ -62,24 +62,23 @@ def bidder_list(request, user_id, job_id):
         'bid_list': bid_list,
     }
     if request.method == 'POST':
-        bidderInfo = request.POST.get('bidder').split(',')
-        print("bidderInfo: ",bidderInfo)
-        bidder_user_id = bidderInfo[0]
-        bidPrice = float(bidderInfo[1])
-        print("bidder user id: ",bidder_user_id)
-        print("bid price: ",bidPrice)
-        bidderUser = get_object_or_404(User, pk=bidder_user_id) #pay money to this guy
-        print(bidderUser.username)
-        initial_payment = bidPrice/2
-        print("initial payment: ", initial_payment)
-        print("bidder user prof money:", bidderUser.profile.money)
-        print("client user money: ", user.profile.money)
-        bidderUser.profile.money += initial_payment
+        bidder_info = request.POST.get('bidder').split(',')
+        bidder_user_id = bidder_info[0]
+        bid_price = float(bidder_info[1])
+        bidder_id = float(bidder_info[2])
+        print("bidder user id: ", bidder_user_id)
+        print("bidder id:", bidder_id)
+        bidder_user = get_object_or_404(User, pk=bidder_user_id) #pay money to this guy
+        bidder = get_object_or_404(Bidder, pk=bidder_id)
+        initial_payment = bid_price/2
+        bidder_user.profile.money += initial_payment
         user.profile.money -= initial_payment
-        bidderUser.profile.save()
+        bidder.isHired = True
+        job.is_open = False
+        job.save()
+        bidder.save()
+        bidder_user.profile.save()
         user.profile.save()
-        print("bidder user prof money after:", bidderUser.profile.money)
-        print("client user money after: ", user.profile.money)
         return redirect('turk:detail', user_id=user_id)
 
     return render(request, 'turk/bidder_list.html', context)

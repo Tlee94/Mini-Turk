@@ -17,7 +17,7 @@
                             <p>Lowest current bid: {{job.lowest_bid}}</p>
                             <p>Pick a developer to hire</p>
                             {% for bidder in bid_list %}
-                                <p><input type="radio" value= {{bidder.user.id}},{{bidder.price}} name="bidder"> {{bidder.price}} {{bidder.user.username}} </input></p>
+                                <p><input type="radio" value= {{bidder.user.id}},{{bidder.price}},{{bidder.id}} name="bidder"> {{bidder.price}} {{bidder.user.username}} {{bidder.id}} </input></p>
                             {% endfor %}
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">

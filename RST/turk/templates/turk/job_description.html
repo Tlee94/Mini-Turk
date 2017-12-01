@@ -45,7 +45,7 @@
                         {% endif %}
 
                         {% if request.user.is_authenticated %}
-                            {% if request.user.profile.position == "Developer" %}
+                            {% if request.user.profile.position == "Developer" and job.is_open == True%}
                                 <a href = "{% url 'turk:bid' request.user.id job.id %}">Click Here to Bid</a>
                             {% endif %}
 

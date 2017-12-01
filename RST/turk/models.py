@@ -49,7 +49,7 @@ class Bidder(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     price = models.FloatField(default=0)
-    #isSelectedForJob boolean?
+    isHired = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.price)
