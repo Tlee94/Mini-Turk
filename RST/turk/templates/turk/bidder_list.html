@@ -14,10 +14,14 @@
 
                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <p>Lowest current bid: {{job.lowest_bid}}</p>
+                            {% if job.lowest_bid > 0 %}
+                                <p>Lowest current bid: {{job.lowest_bid}}</p>
+                            {% else %}
+                                <p>Lowest current bid: None</p>
+                            {% endif %}
                             <p>Pick a developer to hire</p>
                             {% for bidder in bid_list %}
-                                <p><input type="radio" value= {{bidder.user.id}},{{bidder.price}},{{bidder.id}} name="bidder"> {{bidder.price}} {{bidder.user.username}} {{bidder.id}} </input></p>
+                                <p><input type="radio" value= {{bidder.user.id}},{{bidder.price}},{{bidder.id}},{{job.lowest_bid}} name="bidder"> {{bidder.price}} {{bidder.user.username}} {{bidder.id}} </input></p>
                             {% endfor %}
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">

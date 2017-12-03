@@ -51,7 +51,8 @@ def job_description(request, user_id, job_id):
     }
     return render(request, 'turk/job_description.html', context)
 
-
+# Client choose dev, initial payment will transfer if the dev is approved. If bidder is not lowest
+# A reasoning form is required to be filled out
 def bidder_list(request, user_id, job_id):
     user = get_object_or_404(User, pk=user_id)
     job = Job.objects.get(pk=job_id)
@@ -66,20 +67,24 @@ def bidder_list(request, user_id, job_id):
         bidder_user_id = bidder_info[0]
         bid_price = float(bidder_info[1])
         bidder_id = float(bidder_info[2])
+        current_lowest_bid = float(bidder_info[3])
         print("bidder user id: ", bidder_user_id)
         print("bidder id:", bidder_id)
-        bidder_user = get_object_or_404(User, pk=bidder_user_id) #pay money to this guy
+        print("bid price:", bid_price)
+        print("current lowest bid", current_lowest_bid)
+        bidder_user = get_object_or_404(User, pk=bidder_user_id)  # pay money to this guy
         bidder = get_object_or_404(Bidder, pk=bidder_id)
-        initial_payment = bid_price/2
-        bidder_user.profile.money += initial_payment
-        user.profile.money -= initial_payment
-        bidder.isHired = True
-        job.is_open = False
-        job.save()
-        bidder.save()
-        bidder_user.profile.save()
-        user.profile.save()
-        return redirect('turk:detail', user_id=user_id)
+        initial_payment = bid_price / 2
+        if bid_price == current_lowest_bid:
+            Assign_developer(user, job, bidder_user, bidder, initial_payment)
+            return redirect('turk:detail', user_id=user_id)
+        else:
+            # may need to create a page for super user to confirm and automate the money transfer, other wise gata
+            # do transfer manually
+            # remember to set the job closed after confirmation
+            developer = DeveloperChosenForJob(job=job, user=bidder_user)
+            developer.save()
+            return redirect('turk:form_to_superuser', user_id=user_id)
 
     return render(request, 'turk/bidder_list.html', context)
 

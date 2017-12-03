@@ -50,7 +50,9 @@
                             {% endif %}
 
                             {% if request.user.id == job.user.id %}
-                                <a href = "{% url 'turk:bidder_list' user.id job.id %}">Click Here to View Bids</a>
+                                {% if job.is_open == True %}
+                                    <a href = "{% url 'turk:bidder_list' user.id job.id %}">Click Here to View Bids</a>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
 

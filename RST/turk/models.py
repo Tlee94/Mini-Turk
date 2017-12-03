@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Profile(models.Model):
@@ -38,7 +39,7 @@ class Job(models.Model):
     job_price = models.FloatField(default=0)
     is_complete = models.BooleanField(default=False)
     is_open = models.BooleanField(default=True) # Job is still open for bid
-    lowest_bid = models.FloatField(default=-1)
+    lowest_bid = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)], default=0)
     bid_deadline = models.DateTimeField(default=datetime.now()+timedelta(7))
 
     def __str__(self):
@@ -48,15 +49,16 @@ class Job(models.Model):
 class Bidder(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
-    price = models.FloatField(default=0)
+    price = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
     isHired = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.price)
 
 
-class Developer(models.Model):
+class DeveloperChosenForJob(models.Model):
     job = models.OneToOneField(Job, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
 
 class FormToSuperUser(models.Model):
@@ -71,3 +73,4 @@ class FormToSuperUser(models.Model):
 
     def __str__(self):
         return str(self.reason)
+

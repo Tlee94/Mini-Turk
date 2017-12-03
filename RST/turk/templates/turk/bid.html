@@ -11,7 +11,11 @@
 
                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <p>Lowest current bid: {{job.lowest_bid}}</p>
+                            {% if job.lowest_bid > 0 %}
+                                <p>Lowest current bid: {{job.lowest_bid}}</p>
+                            {% else %}
+                                <p>Lowest current bid: NONE</p>
+                            {% endif %}
                             <p>Place your bid here</p>
                             {% include 'turk/form-template.html' %}
                             <div class="form-group">
