@@ -9,12 +9,42 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy, reverse
 from .helper import *
+from django.utils import timezone
+from datetime import datetime
 
 #url - views - html
 
+'''
 # home page
 def index(request):
     all_jobs = Job.objects.all()
+    context = {
+        'all_jobs': all_jobs,
+    }
+    return render(request, 'turk/index.html', context)'''
+
+
+def index(request):
+    all_jobs = Job.objects.filter(is_open=True)
+
+    admin = get_object_or_404(User, pk=1)  # admin
+    for i in range(0, len(all_jobs)):
+        if timezone.now() - timezone.timedelta(days=1) > all_jobs[i].bid_deadline:
+            all_jobs[i].user.profile.money -= 10 # penalty for having no bidders
+            admin.profile.money += 10
+            all_jobs[i].is_open = False
+            all_jobs[i].save()
+            all_jobs[i].user.profile.save()
+            admin.profile.save()
+            print("No bidder penalty")
+
+    all_jobs = Job.objects.filter(is_open=True)
+    for i in range(0, len(all_jobs)):
+        print(all_jobs[i].job_title, ": ", all_jobs[i].bid_deadline)
+
+    print(datetime.now())
+    print(timezone.now() - timezone.timedelta(days=1))
+    print("_________________")
     context = {
         'all_jobs': all_jobs,
     }
@@ -184,6 +214,8 @@ def login_user(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
+                if user.profile.isBlackListed:
+                    return render(request, 'turk/login.html', {'error_message': 'Your account has been blacklisted'})
                 login(request, user)
                 all_jobs = Job.objects.all()
                 context = {
@@ -212,7 +244,7 @@ class JobDelete(DeleteView):
     #success_url = reverse_lazy('turk:index')
 
 
-# Registration   'turk:update_profile' user.id user.profile.id
+# Registration
 class UserFormView(View):
     form_class = UserForm
     template_name = 'turk/registration_form.html'

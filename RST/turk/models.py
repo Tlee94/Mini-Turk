@@ -25,6 +25,7 @@ class Profile(models.Model):
     position = models.CharField(max_length=9, choices=POSITION_CHOICES, default='Temporary')
     profile_picture = models.ImageField()
     interest = models.TextField()
+    isBlackListed = models.BooleanField(default=False)
     #isClient = models.BooleanField(default=True)
 
     def __str__(self):
@@ -73,4 +74,5 @@ class FormToSuperUser(models.Model):
 
     def __str__(self):
         return str(self.reason)
+
 
