@@ -86,6 +86,12 @@ def detail(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     return render(request, 'turk/detail.html',  {'user': user})
 
+
+def message(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    return render(request, 'turk/message.html', {'user': user})
+
+
 '''
 def job_description(request, user_id, job_id):
     user = get_object_or_404(User, pk=user_id)
@@ -97,8 +103,6 @@ def job_description(request, user_id, job_id):
     }
     return render(request, 'turk/job_description.html', context)
     '''
-
-
 def job_description(request, user_id, job_id):
     user = get_object_or_404(User, pk=user_id)
     job = Job.objects.get(pk=job_id)

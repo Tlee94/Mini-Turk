@@ -78,16 +78,22 @@ class FormToSuperUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     writing = models.TextField()
     REASON_OPTIONS = (
-        ('Not_lowest_bid', 'Not_lowest_bid'),
-        ('Rating_Warning', 'Rating_Warning'),
-        ('Protest_Rating', 'Protest_Rating')
+        ('Not Lowest Bid', 'Not Lowest Bid'),
+        ('Rating Warning', 'Rating Warning'),
+        ('Protest Rating', 'Protest Rating'),
+        ('Protest Warning', 'Protest Warning'),
+        ('Quit The System', 'Quit The System')
     )
-    reason = models.CharField(max_length=35, choices=REASON_OPTIONS, default='Not_lowest_bid')
+    reason = models.CharField(max_length=35, choices=REASON_OPTIONS, default='Not Lowest Bid')
 
     def __str__(self):
         return str(self.reason)
 
 
-#class Message(models.Model):
-#    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
+class Message(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    title = models.CharField(max_length=250)
+    message = models.TextField()
 
+    def __str__(self):
+        return self.title

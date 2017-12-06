@@ -59,6 +59,15 @@
                         </a>
                     </li>
                 </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="{% url 'turk:message' request.user.id %}">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;
+                            Warnings
+                        </a>
+                    </li>
+                </ul>
             {% else %}
             <!--
                 <ul class="nav navbar-nav navbar-right">

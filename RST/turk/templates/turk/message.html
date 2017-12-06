@@ -1,0 +1,12 @@
+{% extends 'turk/base.html' %}
+
+{% block body %}
+
+<p>Message Board</p>
+<p>Your Number of Warnings: Needs to be implemented</p>
+
+{% for msgs in user.message_set.all %}
+    <p>{{msgs.title}}</p>
+{% endfor %}
+
+{% endblock %}
