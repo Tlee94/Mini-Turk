@@ -3,6 +3,10 @@
 
 {% block body %}
     {% if all_jobs %}
+        <h3>Users with similar interest</h3>
+        {% for user in similar_users %}
+        <p><a href="{% url 'turk:detail' user.user.id %}">{{user}}</a></p>
+        {% endfor %}
         <h3> Here are all jobs </h3>
 
         {% for job in all_jobs %}
@@ -12,7 +16,7 @@
         {% endfor %}
 
         {% else %}
-            <h3> No Profile yet </h3>
+            <h3> No jobs yet </h3>
     {% endif %}
 {% endblock %}
 

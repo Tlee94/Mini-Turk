@@ -24,7 +24,7 @@ def index(request):
     return render(request, 'turk/index.html', context)'''
 
 
-def index(request):
+'''def index(request):
     all_jobs = Job.objects.filter(is_open=True)
 
     admin = get_object_or_404(User, pk=1)  # admin
@@ -42,11 +42,41 @@ def index(request):
     for i in range(0, len(all_jobs)):
         print(all_jobs[i].job_title, ": ", all_jobs[i].bid_deadline)
 
-    print(datetime.now())
-    print(timezone.now() - timezone.timedelta(days=1))
-    print("_________________")
     context = {
         'all_jobs': all_jobs,
+    }
+    return render(request, 'turk/index.html', context)'''
+
+
+def index(request):
+    all_jobs = Job.objects.filter(is_open=True)
+
+    admin = get_object_or_404(User, pk=1)  # admin
+    for i in range(0, len(all_jobs)):
+        if timezone.now() - timezone.timedelta(days=1) > all_jobs[i].bid_deadline:
+            all_jobs[i].user.profile.money -= 10  # penalty for having no bidders
+            admin.profile.money += 10
+            all_jobs[i].is_open = False
+            all_jobs[i].save()
+            all_jobs[i].user.profile.save()
+            admin.profile.save()
+            print("No bidder penalty")
+
+    all_jobs = Job.objects.filter(is_open=True)
+    for i in range(0, len(all_jobs)):
+        print(all_jobs[i].job_title, ": ", all_jobs[i].bid_deadline)
+
+    # Now for list of users with similar interest
+    if request.user.is_authenticated():
+        # user = get_object_or_404(User, pk=user_id)
+        profile_id = request.user.profile.id
+        profile = get_object_or_404(Profile, pk=profile_id)
+        similar_users = Profile.objects.filter(interest__contains='Being Human').order_by('?')[:3]
+        print("similar_users: ",similar_users)
+
+    context = {
+        'all_jobs': all_jobs,
+        'similar_users': similar_users,
     }
     return render(request, 'turk/index.html', context)
 
@@ -106,7 +136,7 @@ def bidder_list(request, user_id, job_id):
         bidder = get_object_or_404(Bidder, pk=bidder_id)
         initial_payment = bid_price / 2
         if bid_price == current_lowest_bid:
-            Assign_developer(user, job, bidder_user, bidder, initial_payment)
+            assign_developer(user, job, bidder_user, bidder, initial_payment)
             return redirect('turk:detail', user_id=user_id)
         else:
             # may need to create a page for super user to confirm and automate the money transfer, other wise gata

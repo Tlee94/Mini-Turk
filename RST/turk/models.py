@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from django.core.validators import MaxValueValidator, MinValueValidator
+from multiselectfield import MultiSelectField
 
 
 class Profile(models.Model):
@@ -26,6 +27,17 @@ class Profile(models.Model):
     profile_picture = models.ImageField()
     interest = models.TextField()
     isBlackListed = models.BooleanField(default=False)
+    INTEREST_CHOICES=(
+        ('Being Human', 'Being Human'),
+        ('Software Development', 'Software Development'),
+        ('Video Games', 'Video Games'),
+        ('Social Media', 'Social Media'),
+        ('Food', 'Food'),
+        ('Party', 'Party'),
+        ('Entrepreneurship', 'Entrepreneurship'),
+        ('Money', 'Money'),
+    )
+    interest = MultiSelectField(choices=INTEREST_CHOICES, default="Being Human")
     #isClient = models.BooleanField(default=True)
 
     def __str__(self):
@@ -75,4 +87,7 @@ class FormToSuperUser(models.Model):
     def __str__(self):
         return str(self.reason)
 
+
+#class Message(models.Model):
+#    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
 

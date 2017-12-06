@@ -13,7 +13,7 @@ def get_lowest_bid(job):
         job.save()
 
 
-def Assign_developer(user, job, bidder_user, bidder, initial_payment):
+def assign_developer(user, job, bidder_user, bidder, initial_payment):
     bidder_user.profile.money += initial_payment
     user.profile.money -= initial_payment
     bidder.isHired = True
@@ -24,6 +24,10 @@ def Assign_developer(user, job, bidder_user, bidder, initial_payment):
     user.profile.save()
     developer = DeveloperChosenForJob(job=job, user=bidder_user)
     developer.save()
+
+
+
+
 
 
 
