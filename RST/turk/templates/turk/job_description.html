@@ -45,13 +45,26 @@
                         {% endif %}
 
                         {% if request.user.is_authenticated %}
-                            {% if request.user.profile.position == "Developer" and job.is_open == True%}
+                            {% if request.user.profile.position == "Developer" and job.is_open == True %}
                                 <a href = "{% url 'turk:bid' request.user.id job.id %}">Click Here to Bid</a>
                             {% endif %}
 
+                            <!--Dev stuff-->
+                            {% if request.user.id == job.developerchosenforjob.user.id %}
+                                {% if job.is_complete == False %}
+                                    <a href = "{% url 'turk:submit_job' user.id job.id %}">Submit Job</a>
+                                {% endif %}
+                            {% endif %}
+
+                            <!-- Client Stuff -->
                             {% if request.user.id == job.user.id %}
                                 {% if job.is_open == True %}
                                     <a href = "{% url 'turk:bidder_list' user.id job.id %}">Click Here to View Bids</a>
+                                {% endif %}
+                                {% if job.is_complete == True %}
+                                    {% if job.is_rated == False %}
+                                        <a href = "{% url 'turk:rate_job' user.id job.id %}">Click Here to Rate Jobs</a>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endif %}

@@ -47,4 +47,11 @@ urlpatterns = [
 
     # message page
     url(r'^profile/(?P<user_id>[0-9]+)/message/(?P<msg_id>[0-9]+)$', views.message_detail, name='message_detail'),
+
+    # submit job page
+    url(r'^profile/(?P<user_id>[0-9]+)/job/(?P<job_id>[0-9]+)/submit$', views.submit_job, name='submit_job'),
+
+    # client rate job
+    url(r'^profile/(?P<user_id>[0-9]+)/job/(?P<job_id>[0-9]+)/rate_job', views.rate_job, name='rate_job'),
+
 ]

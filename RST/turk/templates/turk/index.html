@@ -3,10 +3,13 @@
 
 {% block body %}
     {% if all_jobs %}
-        <h3>Users with similar interest</h3>
-        {% for user in similar_users %}
-        <p><a href="{% url 'turk:detail' user.user.id %}">{{user}}</a></p>
-        {% endfor %}
+        {% if request.user.is_authenicated %}
+            <h3>Users with similar interest</h3>
+            {% for user in similar_users %}
+                <p><a href="{% url 'turk:detail' user.user.id %}">{{user}}</a></p>
+            {% endfor %}
+        {% endif %}
+
         <h3> Here are all jobs </h3>
 
         {% for job in all_jobs %}

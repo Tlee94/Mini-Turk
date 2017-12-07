@@ -2,14 +2,26 @@
 
 {% block body %}
 
-<p>Message Board</p>
+<h1>Message Board</h1>
 <p>Your Total Number of Warnings: Needs to be implemented</p>
 
-<p>Your Warnings</p>
+<h3>Your Warnings</h3>
 {% for msg in user.message_set.all %}
     <p><a href="{% url 'turk:message_detail' user.id msg.id %}">{{msg.title}}</a></p>
 {% endfor %}
 
-<p>Your Complete Jobs</p>
+<h3>Your Complete Jobs</h3>
+
+{% if request.user.profile.position == "Client" %}
+    {% for job in jobs %}
+        <p><a href="#">{{job.job_title}}</a></p>
+    {% endfor %}
+{% endif %}
+
+{% if request.user.profile.position == "Developer" %}
+    {% for job in jobs %}
+        <p><a href="#">{{job.job.job_title}}</a></p>
+    {% endfor %}
+{% endif %}
 
 {% endblock %}

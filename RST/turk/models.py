@@ -17,15 +17,21 @@ class Profile(models.Model):
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Male')
     email = models.CharField(max_length=250)
     RATING_CHOICES=(
-        ('1', '1'),
-        ('2', '2'),
-        ('3', '3'),
-        ('4', '4'),
-        ('5', '5'),
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
     )
     rating = models.FloatField(choices=RATING_CHOICES, default=5)
     average_rating = models.FloatField(default=0)
     rating_count = models.IntegerField(default=0)
+
+    total_rating = models.FloatField(default=0) # sum of all rating
+
+    avg_give_rating = models.FloatField(default=0)
+    total_give_rating = models.FloatField(default=0)
+
     money = models.FloatField(default=0)
     POSITION_CHOICES=(
         ('Temporary', 'Temporary'),
@@ -49,6 +55,30 @@ class Profile(models.Model):
     interest = MultiSelectField(choices=INTEREST_CHOICES, default="Being Human")
     #isClient = models.BooleanField(default=True)
 
+    honor_Early_Bird = models.BooleanField(default=False)
+    honor_Hard_Worker = models.BooleanField(default=False)
+    honor_MILLIONAIRE = models.BooleanField(default=False)
+    honor_Job_Supplier = models.BooleanField(default=False)
+    honor_Veteran = models.BooleanField(default=False)
+    honor_toohardman = models.BooleanField(default=False)
+    honor_Cold_Headed_Tim = models.BooleanField(default=False)
+    honor_Novice = models.BooleanField(default=True)
+    honor_Normie = models.BooleanField(default=False)
+    honor_General = models.BooleanField(default=False)
+    honor_Lurker = models.BooleanField(default=False)
+
+
+    num_early = models.IntegerField(default=0)      # number of time dev delivered early
+    money_earned = models.FloatField(default=0)     # amount of money dev made
+    num_post = models.IntegerField(default=0)       # number of total posts client posted
+    num_post_ex = models.IntegerField(default=0)    # number of expired posts client posted
+
+    acc_created = models.DateTimeField(default=datetime.now())   # date of when acc made
+
+    warn_poor = models.BooleanField(default=False)  # avg rating <=2 for >=5 projects
+    warn_eval = models.BooleanField(default=False)  # avg rating to others <2 or >4 for >=8 projects
+    warn_final = models.BooleanField(default=False) # final warning, next login = gg
+
     def __str__(self):
         return self.name
 
@@ -59,15 +89,21 @@ class Job(models.Model):
     job_title = models.CharField(max_length=250)
     job_description = models.TextField()
     job_price = models.FloatField(default=0)
-    is_complete = models.BooleanField(default=False)
+
+    is_complete = models.BooleanField(default=False) # job submitted
+    is_late = models.BooleanField(default=False)
+    is_rated = models.BooleanField(default=False)
+
+
     is_open = models.BooleanField(default=True) # Job is still open for bid
     lowest_bid = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)], default=0)
     bid_deadline = models.DateTimeField(default=datetime.now()+timedelta(7))
+    job_deadline = models.DateTimeField(default=datetime.now()+timedelta(21))
 
     def __str__(self):
         return self.job_title
 
-
+# list of ppl who bid on job
 class Bidder(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
@@ -111,3 +147,30 @@ class Message(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class JobSubmission(models.Model):
+    developer = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, default=1)
+    submission = models.TextField()
+
+    def __str__(self):
+        return self.submission
+
+
+class ClientRateForm(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, default=1)
+    RATING_CHOICES = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+    )
+    rating = models.FloatField(choices=RATING_CHOICES, default=5)
+    reason = models.TextField()
+
+    def __str__(self):
+        return self.reason
+

@@ -26,7 +26,7 @@
                     {% if user.profile.rating_count == 0 %}
                         <h3>Rating: NONE</h3>
                     {% else %}
-                        <h3>Rating: {{rating}}</h3>
+                        <h3>Rating: {{average_rating}}</h3>
                     {% endif %}
                     <h3>money: {{ user.profile.money }}</h3>
                     <h3>position: {{ user.profile.position }} </h3>
@@ -35,16 +35,22 @@
             </div>
         </div>
 
-
-
-
-
     <ul>
-        {% for job in user.job_set.all %}
-            <li><a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a>
-            bid deadline: {{job.bid_deadline}}
-            </li>
-        {% endfor %}
+        {% if user.profile.position == "Client" %}
+            {% for job in user.job_set.all %}
+                <li><a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a>
+                bid deadline: {{job.bid_deadline}}
+                </li>
+            {% endfor %}
+        {% endif %}
+
+        {% if user.profile.position == "Developer" %}
+        <br>
+        <h3>List of Jobs This Developer currently Have</h3>
+            {% for bidder in user.bidder_set.all %}
+                <p><a href="{% url 'turk:job_description' bidder.job.user.id bidder.job.id %}">{{bidder.job.job_title}}</a></p>
+            {% endfor %}
+        {% endif %}
     </ul>
 
     {% if request.user.is_authenticated %}

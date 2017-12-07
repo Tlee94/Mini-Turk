@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Profile, Job, Bidder, Message
+from .models import Profile, Job, Bidder, Message, JobSubmission
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
 from django.views.generic import View
-from .forms import JobForm, UserForm, FormToSuperUser, BidForm
+from .forms import JobForm, UserForm, FormToSuperUser, BidForm, JobSubmissionForm, ClientRateForm
 from django.contrib.auth.models import User
 from django.views.generic.edit import UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy, reverse
@@ -71,35 +71,71 @@ def index(request):
         # user = get_object_or_404(User, pk=user_id)
         profile_id = request.user.profile.id
         profile = get_object_or_404(Profile, pk=profile_id)
+        user = get_object_or_404(User, pk=profile.user.id)
+        give_trophy(profile)
+        warn_user(profile)
+
+        #TODO: FIX THIS
+        if profile.warn_final == True:
+            print("Warn_final")
+            FormToSuperUser.reason = 'Protest Warning'
+            return render(request, 'turk/form_to_superuser.html')
+
         similar_users = Profile.objects.filter(interest__contains='Being Human').order_by('?')[:3]
         print("similar_users: ", similar_users)
 
-    context = {
-        'all_jobs': all_jobs,
-        'similar_users': similar_users,
-    }
+        context = {
+            'all_jobs': all_jobs,
+            'similar_users': similar_users,
+        }
+    else:
+        context = {
+            'all_jobs': all_jobs,
+        }
+
     return render(request, 'turk/index.html', context)
 
 
 # profile page
 def detail(request, user_id):
     user = get_object_or_404(User, pk=user_id)
+    profile = get_object_or_404(Profile, pk=user.profile.id)
 
-    rating = 0
-    if user.profile.rating_count > 0:
-        rating = user.profile.rating/user.profile.rating_count
+    ban(profile ,user)
+
+    average_rating = user.profile.average_rating
+
+    '''if user.profile.rating_count > 0:
+        average_rating = user.profile.rating/user.profile.rating_count
+        user.profile.average_rating = average_rating
+        user.profile.save()'''
 
     context = {
         'user': user,
-        'rating': rating,
+        'average_rating': average_rating,
     }
+    print(type(user.profile.interest))
 
     return render(request, 'turk/detail.html', context)
 
 
 def message(request, user_id):
     user = get_object_or_404(User, pk=user_id)
-    return render(request, 'turk/message.html', {'user': user})
+
+    if request.user.profile.position == "Client":
+        jobs = Job.objects.filter(user=user).filter(is_complete=True)
+
+    if request.user.profile.position == "Developer":
+        jobs = JobSubmission.objects.filter(developer=user)
+
+    print(jobs)
+
+    context = {
+        'user': user,
+        'jobs': jobs,
+    }
+
+    return render(request, 'turk/message.html', context)
 
 
 def message_detail(request, user_id, msg_id):
@@ -138,6 +174,7 @@ def job_description(request, user_id, job_id):
     }
     return render(request, 'turk/job_description.html', context)
 
+
 # Client choose dev, initial payment will transfer if the dev is approved. If bidder is not lowest
 # A reasoning form is required to be filled out
 def bidder_list(request, user_id, job_id):
@@ -162,6 +199,8 @@ def bidder_list(request, user_id, job_id):
         bidder_user = get_object_or_404(User, pk=bidder_user_id)  # pay money to this guy
         bidder = get_object_or_404(Bidder, pk=bidder_id)
         initial_payment = bid_price / 2
+        job.job_price = bid_price
+        job.save()
         if bid_price == current_lowest_bid:
             assign_developer(user, job, bidder_user, bidder, initial_payment)
             return redirect('turk:detail', user_id=user_id)
@@ -195,6 +234,93 @@ def create_job(request, user_id):
         return render(request, 'turk/create_job.html', context)
     # profile = get_object_or_404(Profile, pk=profile_id)
     # return render(request, 'turk/create_job.html', {'profile': profile})
+
+
+def submit_job(request, user_id, job_id):
+    if not request.user.is_authenticated():
+        return render(request, 'turk/login.html')
+    else:
+        user = get_object_or_404(User, pk=user_id)
+        job = get_object_or_404(Job, pk=job_id)
+
+        super_user = get_object_or_404(User, pk=1)
+
+
+        today_date = timezone.now() - timezone.timedelta(hours=5)  # -5 hrs b/c wrong timezone
+        job_deadline = job.job_deadline
+        c = job_deadline - today_date
+        diff_seconds = c.seconds
+
+        if diff_seconds >= 0:
+            print(job.job_price/2)
+            print('SU $:', super_user.profile.money)
+            print('Cli $:', job.user.profile.money)
+
+            super_user.profile.money += job.job_price/2
+            job.user.profile.money -= job.job_price/2
+
+            print('transaction completed')
+            print('SU $:', super_user.profile.money)
+            print('Cli $:', job.user.profile.money)
+
+            job.is_complete = True
+            job.save()
+
+            print("dev: ",job.developerchosenforjob.user.profile.num_early)
+            job.developerchosenforjob.user.profile.num_early += 1
+            print("dev after num_ealry: ", job.developerchosenforjob.user.profile.num_early)
+
+            job.developerchosenforjob.user.profile.save()
+            job.user.profile.save()
+            super_user.profile.save()
+
+            print('SU $:', super_user.profile.money)
+            print('Cli $:', job.user.profile.money)
+
+        form = JobSubmissionForm(request.POST or None)
+        context = {
+            'user': user,
+            'job': job,
+            'form': form,
+        }
+
+        if form.is_valid():
+            submission = form.save(commit=False)
+            submission.developer = request.user
+            submission.job = job
+            submission.save()
+            job.is_complete = True
+            job.is_open = False
+            job.save()
+            return redirect('turk:index')
+
+    return render(request, 'turk/submit_job.html', context)
+
+
+def rate_job(request, user_id, job_id):
+    if not request.user.is_authenticated():
+        return render(request, 'turk/login.html')
+    else:
+        job = get_object_or_404(Job, pk=job_id)
+        user = get_object_or_404(User, pk=user_id)
+        form = ClientRateForm(request.POST or None)
+        if form.is_valid():
+            rating_form = form.save(commit=False)
+            rating_form.user = user
+            rating_form.job = job
+            rating_form.save()
+
+            print("Rated: ", rating_form.rating)
+
+            update_rate_db(rating_form.rating, job)
+
+            return redirect('turk:index')
+
+        context = {
+            'form': form,
+        }
+
+    return render(request, 'turk/rate_job.html', context)
 
 
 def bid(request, user_id, job_id):
@@ -246,10 +372,13 @@ def form_to_superuser(request, user_id):
         user = get_object_or_404(User, pk=user_id)
         form = FormToSuperUser(request.POST or None)
         if form.is_valid():
+            print("In form")
             ftsu = form.save(commit=False)
             ftsu.user = user
             ftsu.save()
-            return render(request, 'turk/detail.html', {'user': user})
+            #return render(request, 'turk/detail.html', {'user': user})
+            return redirect('turk/detail.html', user_id=user_id)
+
         context = {
             'user': user,
             'form': form,
@@ -278,7 +407,8 @@ def login_user(request):
                 context = {
                     'all_jobs': all_jobs,
                 }
-                return render(request, 'turk/index.html', context)
+                #return render(request, 'turk/index.html', context)
+                return redirect('turk:index')
             else:
                 return render(request, 'turk/login.html', {'error_message': 'Your account has been disabled'})
         else:
