@@ -16,7 +16,16 @@ class Profile(models.Model):
     )
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Male')
     email = models.CharField(max_length=250)
-    rating = models.FloatField(default=5)
+    RATING_CHOICES=(
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+    )
+    rating = models.FloatField(choices=RATING_CHOICES, default=5)
+    average_rating = models.FloatField(default=0)
+    rating_count = models.IntegerField(default=0)
     money = models.FloatField(default=0)
     POSITION_CHOICES=(
         ('Temporary', 'Temporary'),
@@ -94,6 +103,11 @@ class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     title = models.CharField(max_length=250)
     message = models.TextField()
+    MESSAGE_REASONS = (
+        ('Warnings', 'Warnings'),
+        ('Jobs', 'Jobs'),
+    )
+    reason = models.CharField(max_length=9, choices=MESSAGE_REASONS, default='Temporary')
 
     def __str__(self):
         return self.title

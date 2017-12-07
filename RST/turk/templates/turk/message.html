@@ -3,10 +3,13 @@
 {% block body %}
 
 <p>Message Board</p>
-<p>Your Number of Warnings: Needs to be implemented</p>
+<p>Your Total Number of Warnings: Needs to be implemented</p>
 
-{% for msgs in user.message_set.all %}
-    <p>{{msgs.title}}</p>
+<p>Your Warnings</p>
+{% for msg in user.message_set.all %}
+    <p><a href="{% url 'turk:message_detail' user.id msg.id %}">{{msg.title}}</a></p>
 {% endfor %}
+
+<p>Your Complete Jobs</p>
 
 {% endblock %}

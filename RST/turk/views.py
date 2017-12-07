@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Profile, Job, Bidder
+from .models import Profile, Job, Bidder, Message
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
@@ -72,7 +72,7 @@ def index(request):
         profile_id = request.user.profile.id
         profile = get_object_or_404(Profile, pk=profile_id)
         similar_users = Profile.objects.filter(interest__contains='Being Human').order_by('?')[:3]
-        print("similar_users: ",similar_users)
+        print("similar_users: ", similar_users)
 
     context = {
         'all_jobs': all_jobs,
@@ -84,12 +84,35 @@ def index(request):
 # profile page
 def detail(request, user_id):
     user = get_object_or_404(User, pk=user_id)
-    return render(request, 'turk/detail.html',  {'user': user})
+
+    rating = 0
+    if user.profile.rating_count > 0:
+        rating = user.profile.rating/user.profile.rating_count
+
+    context = {
+        'user': user,
+        'rating': rating,
+    }
+
+    return render(request, 'turk/detail.html', context)
 
 
 def message(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     return render(request, 'turk/message.html', {'user': user})
+
+
+def message_detail(request, user_id, msg_id):
+    user = get_object_or_404(User, pk=user_id)
+    message = get_object_or_404(Message, pk=msg_id)
+
+    context = {
+        'user': user,
+        'message': message,
+    }
+
+    return render(request, 'turk/message_detail.html', context)
+
 
 
 '''
@@ -267,6 +290,7 @@ class UpdateProfile(UpdateView):
     model = Profile
     fields = ['name', 'email', 'age', 'gender', 'money', 'profile_picture', 'interest']
     success_url = reverse_lazy('turk:index')
+    #get_absolute_url('turk:index')
     #success_url = reverse_lazy('turk:detail', args=[id])
 
 

@@ -44,4 +44,7 @@ urlpatterns = [
 
     # message page
     url(r'^profile/(?P<user_id>[0-9]+)/message/$', views.message, name='message'),
+
+    # message page
+    url(r'^profile/(?P<user_id>[0-9]+)/message/(?P<msg_id>[0-9]+)$', views.message_detail, name='message_detail'),
 ]
