@@ -44,7 +44,7 @@ class Profile(models.Model):
         ('Developer', 'Developer'),
     )
     position = models.CharField(max_length=9, choices=POSITION_CHOICES, default='Temporary')
-    profile_picture = models.ImageField()
+    profile_picture = models.ImageField(default='default.png')
     interest = models.TextField()
     isBlackListed = models.BooleanField(default=False)
     INTEREST_CHOICES=(
