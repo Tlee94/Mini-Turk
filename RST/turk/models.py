@@ -16,6 +16,11 @@ class Profile(models.Model):
     )
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Male')
     email = models.CharField(max_length=250)
+
+    resume = models.FileField()
+    sample_work_or_bussiness_credential = models.FileField()
+
+
     RATING_CHOICES=(
         (1, 1),
         (2, 2),
