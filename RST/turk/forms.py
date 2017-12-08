@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import Profile, Job, Bidder, FormToSuperUser, JobSubmission, ClientRateForm
+from .models import Profile, Job, Bidder, FormToSuperUser, JobSubmission, ClientRateForm, ProtestWarning
 
 
 class ProfileForm(forms.ModelForm):
@@ -53,4 +53,11 @@ class ClientRateForm(forms.ModelForm):
     class Meta:
         model = ClientRateForm
         fields = ['rating', 'reason']
+
+
+class ProtestWarningForm(forms.ModelForm):
+
+    class Meta:
+        model = ProtestWarning
+        fields = ['reason']
 

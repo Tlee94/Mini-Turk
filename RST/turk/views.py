@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
 from django.views.generic import View
-from .forms import JobForm, UserForm, FormToSuperUser, BidForm, JobSubmissionForm, ClientRateForm
+from .forms import JobForm, UserForm, FormToSuperUser, BidForm, JobSubmissionForm, ClientRateForm, ProtestWarningForm
 from django.contrib.auth.models import User
 from django.views.generic.edit import UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy, reverse
@@ -95,9 +95,11 @@ def index(request):
 
         # TODO: FIX THIS
         if profile.warn_final == True:
-            print("Warn_final")
-            FormToSuperUser.reason = 'Protest Warning'
-            return render(request, 'turk/form_to_superuser.html')
+            user_id = request.user.id
+            return redirect('turk:protest_warning', user_id=user_id)
+            print("Warn_final DASKJLASKJDLAKJDLAKSJDLASKJDLAKDJL")
+            #FormToSuperUser.reason = 'Protest Warning'
+            #return render(request, 'turk/protest_warning.html')
 
         similar_users = Profile.objects.filter(interest__contains='Being Human').order_by('?')[:3]
         print("similar_users: ", similar_users)
@@ -423,13 +425,39 @@ def form_to_superuser(request, user_id):
             ftsu.user = user
             ftsu.save()
             #return render(request, 'turk/detail.html', {'user': user})
-            return redirect('turk/detail.html', user_id=user_id)
+            return redirect('turk:detail.html', user_id=user_id)
 
         context = {
             'user': user,
             'form': form,
         }
         return render(request, 'turk/form_to_superuser.html', context)
+
+
+def protest_warning(request, user_id):
+    if not request.user.is_authenticated():
+        return render(request, 'turk/login.html')
+    else:
+        user = get_object_or_404(User, pk=user_id)
+        form = ProtestWarningForm(request.POST or None)
+        if form.is_valid():
+            print("In form")
+            f = form.save(commit=False)
+            f.user = user
+            f.save()
+            ban(user.profile, user)
+            logout(request)
+            #return render(request, 'turk/detail.html', {'user': user})
+            #return redirect('turk:detail.html', 1)
+            #return redirect('127.0.0.1:8000/turk/')
+            return redirect('turk:index')
+
+        context = {
+            'user': user,
+            'form': form,
+        }
+        print("protest warning after")
+        return render(request, 'turk/protest_warning.html', context)
 
 
 def logout_user(request):

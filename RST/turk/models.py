@@ -189,3 +189,11 @@ class ClientRateForm(models.Model):
     def __str__(self):
         return self.reason
 
+
+class ProtestWarning(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    reason = models.TextField()
+
+    def __str__(self):
+        return self.reason
+
