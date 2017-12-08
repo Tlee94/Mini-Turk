@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="39b2e041-a73c-4a20-ae35-0a4738cc6a9b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/db.sqlite3" afterPath="$PROJECT_DIR$/RST/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/turk/models.py" afterPath="$PROJECT_DIR$/RST/turk/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RST/turk/views.py" afterPath="$PROJECT_DIR$/RST/turk/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -50,8 +49,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RST/turk/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="464" column="41" lean-forward="true" selection-start-line="464" selection-start-column="41" selection-end-line="464" selection-end-column="41" />
+            <state relative-caret-position="487">
+              <caret line="433" column="70" lean-forward="true" selection-start-line="433" selection-start-column="70" selection-end-line="433" selection-end-column="70" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
                 <element signature="e#5749#6058#1" expanded="false" />
@@ -733,8 +732,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RST/turk/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="464" column="41" lean-forward="true" selection-start-line="464" selection-start-column="41" selection-end-line="464" selection-end-column="41" />
+        <state relative-caret-position="487">
+          <caret line="433" column="70" lean-forward="true" selection-start-line="433" selection-start-column="70" selection-end-line="433" selection-end-column="70" />
           <folding>
             <element signature="e#0#54#0" expanded="true" />
             <element signature="e#5749#6058#1" expanded="false" />
