@@ -39,12 +39,22 @@ class Profile(models.Model):
     total_give_count = models.FloatField(default=0)     # count of rating GIVEN to others
 
     money = models.FloatField(default=0)
+
     POSITION_CHOICES=(
         ('Temporary', 'Temporary'),
         ('Client', 'Client'),
         ('Developer', 'Developer'),
     )
     position = models.CharField(max_length=9, choices=POSITION_CHOICES, default='Temporary')
+
+    DESIRED_POSITION_CHOICES=(
+        ('Client', 'Client'),
+        ('Developer', 'Developer'),
+    )
+
+    desired_position = models.CharField(max_length=9, choices=DESIRED_POSITION_CHOICES, default='Client')
+
+
     profile_picture = models.ImageField(default='default.png')
     interest = models.TextField()
     isBlackListed = models.BooleanField(default=False)
