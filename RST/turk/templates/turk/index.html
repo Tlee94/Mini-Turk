@@ -14,6 +14,20 @@
                 <p><a href="{% url 'turk:detail' dev.user.id %}">{{dev}}</a></p>
             {% endfor %}
 
+            <h3>Grand Statistic</h3>
+            <p>Total Number of clients: {{total_clients}} </p>
+            <p>Total Number of devs: {{total_devs}} </p>
+
+            <p>Most earned Devs:</p>
+            {% for  dev in most_earned_dev_list %}
+                <p><a href="{% url 'turk:detail' dev.user.id %}">{{dev}}</a></p>
+            {% endfor %}
+
+            <p>Most project client :</p>
+            {% for  clients in most_active_client_list %}
+                <p><a href="{% url 'turk:detail' clients.user.id %}">{{clients}}</a></p>
+            {% endfor %}
+
             <h3>Users with similar interest</h3>
             {% for user in similar_users %}
                 <p><a href="{% url 'turk:detail' user.user.id %}">{{user}}</a></p>

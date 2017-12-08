@@ -55,6 +55,10 @@ def index(request):
 
     most_active_client_list = most_active_clients()
     most_active_dev_list = most_active_dev()
+    most_earned_dev_list = most_money_made_dev()
+
+    total_clients = total_num_clients()
+    total_devs = total_num_devs()
 
     # No one bidded
     for i in range(0, len(all_jobs)):
@@ -103,6 +107,9 @@ def index(request):
             'similar_users': similar_users,
             'most_active_client_list': most_active_client_list,
             'most_active_dev_list': most_active_dev_list,
+            'most_earned_dev_list': most_earned_dev_list,
+            'total_clients': total_clients,
+            'total_devs': total_devs,
         }
     else:
         context = {
@@ -312,10 +319,15 @@ def submit_job(request, user_id, job_id):
 
             # Rates client
             rate(submission.rating, job, True)
+            print("Dev money BEFREE!!: ", job.developerchosenforjob.user.profile.money_earned)
+            job.developerchosenforjob.user.profile.money_earned += (job.job_price * 0.95)
+            print("Dev money earned: ", job.developerchosenforjob.user.profile.money_earned)
+
 
             return redirect('turk:index')
 
     return render(request, 'turk/submit_job.html', context)
+
 
 # Client rates dev
 def rate_job(request, user_id, job_id):

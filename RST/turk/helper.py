@@ -252,13 +252,29 @@ def rate(rating, job, isRatingClient):
 
 def most_active_clients():
     most_active = Profile.objects.filter(position="Client").order_by('-rating_count')[:3]
-    print("MOST ACTIVE: ",most_active)
+    print("MOST ACTIVE: ", most_active)
     return most_active
 
 
 def most_active_dev():
     most_active = Profile.objects.filter(position="Developer").order_by('-rating_count')[:3]
-    print("MOST ACTIVE: ",most_active)
+    print("MOST ACTIVE: ", most_active)
     return most_active
+
+
+def most_money_made_dev():
+    most_earned = Profile.objects.filter(position="Developer").order_by('-money_earned')[:3]
+    print("MOST ACTIVE: ", most_earned)
+    return most_earned
+
+
+def total_num_clients():
+    total = Profile.objects.filter(position="Client")
+    return len(total)
+
+
+def total_num_devs():
+    total = Profile.objects.filter(position="Developer")
+    return len(total)
 
 
