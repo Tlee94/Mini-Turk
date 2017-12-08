@@ -62,6 +62,7 @@
                                     <a href = "{% url 'turk:bidder_list' user.id job.id %}">Click Here to View Bids</a>
                                 {% endif %}
                                 {% if job.is_complete == True %}
+                                    <p>File: <a href="{{ job.jobsubmission.submission.url }}"> File </a></p>
                                     {% if job.is_rated == False %}
                                         <a href = "{% url 'turk:rate_job' user.id job.id %}">Click Here to Rate Jobs</a>
                                     {% endif %}

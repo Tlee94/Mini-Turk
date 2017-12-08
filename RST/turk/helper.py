@@ -161,3 +161,90 @@ def update_rate_db(rating, job):
     print("job avereage rating: ", job.user.profile.average_rating)
 
 
+def check_dev_late_proj_penalty(job, super_user):
+
+    today_date = timezone.now() - timezone.timedelta(hours=5)  # -5 hrs b/c wrong timezone
+    job_deadline = job.job_deadline
+    c = job_deadline - today_date
+    diff_seconds = c.seconds
+    diff_days = c.days
+    print(c.days)
+    print("diff seconds: ",diff_seconds)
+    print("job_deadline: ", job_deadline)
+    print("today_date: ",today_date)
+
+    print("asdaskdljasldjakkdj: ",job.job_title,diff_days,job.is_complete)
+
+    # Overdue project, job isnt done
+    if diff_days < 0 and job.is_complete == False:
+        job.is_late = True
+        job.is_complete = True
+        client = job.user
+        dev = job.developerchosenforjob.user
+
+        print("Deadline past penalty!")
+        print("dev money: ", dev.profile.money)
+        print("client money: ", client.profile.money)
+        print("admin money: ", super_user.profile.money)
+
+        front_money = job.job_price/2
+        penalty = 5
+        dev.profile.money -= (front_money + penalty)
+        client.profile.money += front_money
+        super_user.profile.money += penalty
+
+        rate(1, job, False)
+        job.developerchosenforjob.is_rated = True
+
+        print("dev money: ", dev.profile.money)
+        print("client money: ", client.profile.money)
+        print("admin money: ", super_user.profile.money)
+
+        job.is_open = False
+        job.save()
+        client.profile.save()
+        dev.profile.save()
+        super_user.profile.save()
+
+
+def rate(rating, job, isRatingClient):
+    # Dev rates Client
+    if isRatingClient:
+        print("job.user.profile.total_rating: ", job.user.profile.total_rating)
+        print("job.developerchosenforjob.user.profile.total_give_rating: ", job.developerchosenforjob.user.profile.total_give_rating)
+
+        job.is_rated = True
+        job.user.profile.total_rating += rating
+        job.user.profile.rating_count += 1
+        job.user.profile.average_rating = (job.user.profile.total_rating/ job.user.profile.rating_count)
+
+        job.developerchosenforjob.user.profile.total_give_rating += rating
+        job.developerchosenforjob.user.profile.total_give_count += 1
+        job.developerchosenforjob.user.profile.avg_give_rating = (job.developerchosenforjob.user.profile.total_give_rating/job.developerchosenforjob.user.profile.total_give_count)
+
+        print("job.user.profile.total_rating: ", job.user.profile.total_rating)
+        print("job.developerchosenforjob.user.profile.total_give_rating: ", job.developerchosenforjob.user.profile.total_give_rating)
+
+    # Client rates dev
+    else:
+
+        print("job.developerchosenforjob.user.profile.total_rating: ", job.developerchosenforjob.user.profile.total_rating)
+        print("job.user.profile.total_give_rating: ", job.user.profile.total_give_rating)
+
+        job.developerchosenforjob.is_rated = True
+        job.developerchosenforjob.user.profile.total_rating += rating
+        job.developerchosenforjob.user.profile.rating_count += 1
+        job.developerchosenforjob.user.profile.average_rating = (job.developerchosenforjob.user.profile.total_rating/job.developerchosenforjob.user.profile.rating_count)
+
+        job.user.profile.total_give_rating += rating
+        job.user.profile.total_give_count += 1
+        job.user.profile.avg_give_rating = (job.user.profile.total_give_rating/job.user.profile.total_give_count)
+
+        print("job.developerchosenforjob.user.profile.total_rating: ", job.developerchosenforjob.user.profile.total_rating)
+        print("job.user.profile.total_give_rating: ", job.user.profile.total_give_rating)
+
+    job.user.profile.save()
+    job.developerchosenforjob.user.profile.save()
+
+
+

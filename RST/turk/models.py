@@ -29,13 +29,14 @@ class Profile(models.Model):
         (5, 5),
     )
     rating = models.FloatField(choices=RATING_CHOICES, default=5)
-    average_rating = models.FloatField(default=0)
-    rating_count = models.IntegerField(default=0)
 
-    total_rating = models.FloatField(default=0) # sum of all rating
+    average_rating = models.FloatField(default=0)       # average of rating RECEIVED by others
+    rating_count = models.IntegerField(default=0)       # count of rating RECEIVED by others
+    total_rating = models.FloatField(default=0)         # total rating RECEIVED by others
 
-    avg_give_rating = models.FloatField(default=0)
-    total_give_rating = models.FloatField(default=0)
+    avg_give_rating = models.FloatField(default=0)      # average of rating GIVEN to others
+    total_give_rating = models.FloatField(default=0)    # total of rating GIVEN to others
+    total_give_count = models.FloatField(default=0)     # count of rating GIVEN to others
 
     money = models.FloatField(default=0)
     POSITION_CHOICES=(
@@ -99,7 +100,6 @@ class Job(models.Model):
     is_late = models.BooleanField(default=False)
     is_rated = models.BooleanField(default=False)
 
-
     is_open = models.BooleanField(default=True) # Job is still open for bid
     lowest_bid = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)], default=0)
     bid_deadline = models.DateTimeField(default=datetime.now()+timedelta(7))
@@ -122,6 +122,7 @@ class Bidder(models.Model):
 class DeveloperChosenForJob(models.Model):
     job = models.OneToOneField(Job, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    is_rated = models.BooleanField(default=False)
 
 
 class FormToSuperUser(models.Model):
@@ -158,6 +159,15 @@ class JobSubmission(models.Model):
     developer = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, default=1)
     submission = models.TextField()
+    RATING_CHOICES = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+    )
+    rating = models.FloatField(choices=RATING_CHOICES, default=5)
+    reason = models.TextField()
 
     def __str__(self):
         return self.submission

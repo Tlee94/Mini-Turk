@@ -52,11 +52,15 @@ def index(request):
     all_jobs = Job.objects.filter(is_open=True)
 
     admin = get_object_or_404(User, pk=1)  # admin
+
+    # No one bidded
     for i in range(0, len(all_jobs)):
-        if timezone.now() - timezone.timedelta(days=1) > all_jobs[i].bid_deadline:
+        if timezone.now() - timezone.timedelta(hours=5) > all_jobs[i].bid_deadline:
             all_jobs[i].user.profile.money -= 10  # penalty for having no bidders
             admin.profile.money += 10
             all_jobs[i].is_open = False
+            all_jobs[i].is_complete = True # consider job done
+            all_jobs[i].user.profile.num_post_ex += 1
             all_jobs[i].save()
             all_jobs[i].user.profile.save()
             admin.profile.save()
@@ -66,6 +70,13 @@ def index(request):
     for i in range(0, len(all_jobs)):
         print(all_jobs[i].job_title, ": ", all_jobs[i].bid_deadline)
 
+    all_jobs_incomplete = Job.objects.filter(is_complete=False)
+    print(len(all_jobs_incomplete))
+    for i in range(0, len(all_jobs_incomplete)):
+        check_dev_late_proj_penalty(all_jobs_incomplete[i], admin)
+
+
+    all_jobs = Job.objects.filter(is_open=True)
     # Now for list of users with similar interest
     if request.user.is_authenticated():
         # user = get_object_or_404(User, pk=user_id)
@@ -303,12 +314,25 @@ def rate_job(request, user_id, job_id):
     else:
         job = get_object_or_404(Job, pk=job_id)
         user = get_object_or_404(User, pk=user_id)
+        super_user = get_object_or_404(User, pk=1)
         form = ClientRateForm(request.POST or None)
         if form.is_valid():
             rating_form = form.save(commit=False)
             rating_form.user = user
             rating_form.job = job
             rating_form.save()
+
+            if rating_form.rating >= 3:
+                print("super_user.profile.money: ", super_user.profile.money)
+                print("job.developerchosenforjob.profile.money: ", job.developerchosenforjob.user.profile.money)
+                super_user.profile.money -= job.job_price / 2
+                job.developerchosenforjob.user.profile.money += job.job_price / 2
+                super_user.profile.save()
+                job.developerchosenforjob.user.profile.save()
+
+                print("super_user.profile.money: ", super_user.profile.money)
+                print("job.developerchosenforjob.profile.money: ", job.developerchosenforjob.user.profile.money)
+            # else send form to super user to decide on money split
 
             print("Rated: ", rating_form.rating)
 
