@@ -67,8 +67,8 @@ def index(request):
             print("No bidder penalty")
 
     all_jobs = Job.objects.filter(is_open=True)
-    for i in range(0, len(all_jobs)):
-        print(all_jobs[i].job_title, ": ", all_jobs[i].bid_deadline)
+    # for i in range(0, len(all_jobs)):
+    #     print(all_jobs[i].job_title, ": ", all_jobs[i].bid_deadline)
 
     all_jobs_incomplete = Job.objects.filter(is_complete=False)
     print(len(all_jobs_incomplete))
@@ -303,11 +303,15 @@ def submit_job(request, user_id, job_id):
             job.is_complete = True
             job.is_open = False
             job.save()
+
+            # Rates client
+            rate(submission.rating, job, True)
+
             return redirect('turk:index')
 
     return render(request, 'turk/submit_job.html', context)
 
-
+# Client rates dev
 def rate_job(request, user_id, job_id):
     if not request.user.is_authenticated():
         return render(request, 'turk/login.html')
@@ -336,8 +340,8 @@ def rate_job(request, user_id, job_id):
 
             print("Rated: ", rating_form.rating)
 
-            update_rate_db(rating_form.rating, job)
-
+            #update_rate_db(rating_form.rating, job)
+            rate(rating_form.rating, job, False)
             return redirect('turk:index')
 
         context = {

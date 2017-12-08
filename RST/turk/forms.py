@@ -45,7 +45,7 @@ class JobSubmissionForm(forms.ModelForm):
 
     class Meta:
         model = JobSubmission
-        fields = ['submission']
+        fields = ['submission', 'rating', 'reason']
 
 
 class ClientRateForm(forms.ModelForm):

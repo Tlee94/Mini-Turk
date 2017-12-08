@@ -149,16 +149,16 @@ def ban(profile,user):
         print('byebye')
 
 
-def update_rate_db(rating, job):
-    job.user.profile.total_rating += rating
-    job.user.profile.rating_count += 1
-    job.user.profile.average_rating = (job.user.profile.total_rating / job.user.profile.rating_count)
-    job.user.profile.save()
-    job.is_rated = True
-    job.save()
-    print("job total rating: ", job.user.profile.total_rating)
-    print("job rating count: ", job.user.profile.rating_count)
-    print("job avereage rating: ", job.user.profile.average_rating)
+# def update_rate_db(rating, job):
+#     job.user.profile.total_rating += rating
+#     job.user.profile.rating_count += 1
+#     job.user.profile.average_rating = (job.user.profile.total_rating / job.user.profile.rating_count)
+#     job.user.profile.save()
+#     job.is_rated = True
+#     job.save()
+#     print("job total rating: ", job.user.profile.total_rating)
+#     print("job rating count: ", job.user.profile.rating_count)
+#     print("job avereage rating: ", job.user.profile.average_rating)
 
 
 def check_dev_late_proj_penalty(job, super_user):
@@ -168,12 +168,12 @@ def check_dev_late_proj_penalty(job, super_user):
     c = job_deadline - today_date
     diff_seconds = c.seconds
     diff_days = c.days
-    print(c.days)
-    print("diff seconds: ",diff_seconds)
-    print("job_deadline: ", job_deadline)
-    print("today_date: ",today_date)
-
-    print("asdaskdljasldjakkdj: ",job.job_title,diff_days,job.is_complete)
+    # print(c.days)
+    # print("diff seconds: ",diff_seconds)
+    # print("job_deadline: ", job_deadline)
+    # print("today_date: ",today_date)
+    #
+    # print("asdaskdljasldjakkdj: ",job.job_title,diff_days,job.is_complete)
 
     # Overdue project, job isnt done
     if diff_days < 0 and job.is_complete == False:
