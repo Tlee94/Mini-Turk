@@ -1,6 +1,7 @@
 from .models import DeveloperChosenForJob
 from datetime import datetime, timedelta
 from django.utils import timezone
+from .models import Profile
 
 def get_lowest_bid(job):
     bid_list = job.bidder_set.all()
@@ -15,9 +16,11 @@ def get_lowest_bid(job):
         job.save()
 
 
-def assign_developer(user, job, bidder_user, bidder, initial_payment):
-    bidder_user.profile.money += initial_payment
+def assign_developer(user, job, bidder_user, bidder, super_user, initial_payment):
+    bidder_user.profile.money += (initial_payment *.95)
     user.profile.money -= initial_payment
+    super_user.profile.money += (initial_payment *.05)
+    super_user.profile.save()
     bidder.isHired = True
     job.is_open = False
     job.save()
@@ -246,5 +249,16 @@ def rate(rating, job, isRatingClient):
     job.user.profile.save()
     job.developerchosenforjob.user.profile.save()
 
+
+def most_active_clients():
+    most_active = Profile.objects.filter(position="Client").order_by('-rating_count')[:3]
+    print("MOST ACTIVE: ",most_active)
+    return most_active
+
+
+def most_active_dev():
+    most_active = Profile.objects.filter(position="Developer").order_by('-rating_count')[:3]
+    print("MOST ACTIVE: ",most_active)
+    return most_active
 
 

@@ -3,11 +3,22 @@
 
 {% block body %}
     {% if all_jobs %}
-        {% if request.user.is_authenicated %}
+        {% if request.user.is_authenticated %}
+            <h3>Most active clients</h3>
+            {% for  clients in most_active_client_list %}
+                <p><a href="{% url 'turk:detail' clients.user.id %}">{{clients}}</a></p>
+            {% endfor %}
+
+            <h3>Most active Developer</h3>
+            {% for  dev in most_active_dev_list %}
+                <p><a href="{% url 'turk:detail' dev.user.id %}">{{dev}}</a></p>
+            {% endfor %}
+
             <h3>Users with similar interest</h3>
             {% for user in similar_users %}
                 <p><a href="{% url 'turk:detail' user.user.id %}">{{user}}</a></p>
             {% endfor %}
+
         {% endif %}
 
         <h3> Here are all jobs </h3>

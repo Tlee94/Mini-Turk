@@ -53,6 +53,9 @@ def index(request):
 
     admin = get_object_or_404(User, pk=1)  # admin
 
+    most_active_client_list = most_active_clients()
+    most_active_dev_list = most_active_dev()
+
     # No one bidded
     for i in range(0, len(all_jobs)):
         if timezone.now() - timezone.timedelta(hours=5) > all_jobs[i].bid_deadline:
@@ -86,7 +89,7 @@ def index(request):
         give_trophy(profile)
         warn_user(profile)
 
-        #TODO: FIX THIS
+        # TODO: FIX THIS
         if profile.warn_final == True:
             print("Warn_final")
             FormToSuperUser.reason = 'Protest Warning'
@@ -98,6 +101,8 @@ def index(request):
         context = {
             'all_jobs': all_jobs,
             'similar_users': similar_users,
+            'most_active_client_list': most_active_client_list,
+            'most_active_dev_list': most_active_dev_list,
         }
     else:
         context = {
@@ -191,6 +196,7 @@ def job_description(request, user_id, job_id):
 def bidder_list(request, user_id, job_id):
     user = get_object_or_404(User, pk=user_id)
     job = Job.objects.get(pk=job_id)
+    super_user = get_object_or_404(User, pk=1)
     bid_list = job.bidder_set.all().order_by('price')
     context = {
         'user': user,
@@ -213,7 +219,7 @@ def bidder_list(request, user_id, job_id):
         job.job_price = bid_price
         job.save()
         if bid_price == current_lowest_bid:
-            assign_developer(user, job, bidder_user, bidder, initial_payment)
+            assign_developer(user, job, bidder_user, bidder, super_user, initial_payment)
             return redirect('turk:detail', user_id=user_id)
         else:
             # may need to create a page for super user to confirm and automate the money transfer, other wise gata
@@ -329,8 +335,8 @@ def rate_job(request, user_id, job_id):
             if rating_form.rating >= 3:
                 print("super_user.profile.money: ", super_user.profile.money)
                 print("job.developerchosenforjob.profile.money: ", job.developerchosenforjob.user.profile.money)
-                super_user.profile.money -= job.job_price / 2
-                job.developerchosenforjob.user.profile.money += job.job_price / 2
+                super_user.profile.money -= (job.job_price *.475) # / 2
+                job.developerchosenforjob.user.profile.money += (job.job_price * .475) #/ 2
                 super_user.profile.save()
                 job.developerchosenforjob.user.profile.save()
 

@@ -14,13 +14,13 @@
 
 {% if request.user.profile.position == "Client" %}
     {% for job in jobs %}
-        <p><a href="#">{{job.job_title}}</a></p>
+        <p><a href="{% url 'turk:job_description' job.user.id job.id %}">{{job.job_title}}</a></p>
     {% endfor %}
 {% endif %}
 
 {% if request.user.profile.position == "Developer" %}
     {% for job in jobs %}
-        <p><a href="#">{{job.job.job_title}}</a></p>
+        <p><a href="{% url 'turk:job_description' job.job.user.id job.job.id %}">{{job.job.job_title}}</a></p>
     {% endfor %}
 {% endif %}
 
