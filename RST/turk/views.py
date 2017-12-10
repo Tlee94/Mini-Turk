@@ -238,6 +238,7 @@ def bidder_list(request, user_id, job_id):
         bidder = get_object_or_404(Bidder, pk=bidder_id)
         initial_payment = bid_price / 2
         job.job_price = bid_price
+        job.is_open = False
         job.save()
         if bid_price == current_lowest_bid:
             assign_developer(user, job, bidder_user, bidder, super_user, initial_payment)
@@ -448,7 +449,7 @@ def form_to_superuser(request, user_id):
             ftsu.user = user
             ftsu.save()
             #return render(request, 'turk/detail.html', {'user': user})
-            return redirect('turk:detail.html', user_id=user_id)
+            return redirect('turk:detail', user_id=user_id)
 
         context = {
             'user': user,
