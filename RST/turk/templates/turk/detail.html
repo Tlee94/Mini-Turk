@@ -37,29 +37,53 @@
             </div>
         </div>
 
+
+<div class = "col-sm-4 col-md-8">
+    <div class = "panel panel-default">
+        <div class = "panel-heading text-center">
+            {% if request.user.is_authenticated %}
+                {% if request.user.profile.position == "Developer" %}
+                     <h1>List of Jobs This Developer currently Have</h1>
+                {% endif %}
+        
+                {% if request.user.profile.position == "Client" %} 
+                    <h1> Posted Jobs</h1>    
+                {% endif %}
+
+                {% if request.user.profile.position == "Temporary" %} 
+                    <h1> Jobs</h1>    
+                {% endif %}
+
+            {% else %}
+                <h1>Jobs</h1>
+            {% endif %}
+        </div>
+    <div class = "panel-body" style = "height:500px;overflow-y: scroll">
     <ul>
         {% if user.profile.position == "Client" %}
             {% for job in user.job_set.all %}
-                <li><a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a>
+                <h2><li><a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a>
                 bid deadline: {{job.bid_deadline}}
-                </li>
+                </li></h2>
             {% endfor %}
         {% endif %}
 
         {% if user.profile.position == "Developer" %}
         <br>
-        <h3>List of Jobs This Developer currently Have</h3>
             {% for bidder in user.bidder_set.all %}
-                <p><a href="{% url 'turk:job_description' bidder.job.user.id bidder.job.id %}">{{bidder.job.job_title}}</a></p>
+                <h2><li><a href="{% url 'turk:job_description' bidder.job.user.id bidder.job.id %}">{{bidder.job.job_title}}</a></li></h2>
             {% endfor %}
         {% endif %}
     </ul>
-
+    </div>
+    </div>
     {% if request.user.is_authenticated %}
-        {% if request.user.id == user.id %}
-            <a href = "{% url 'turk:update_profile' user.id user.profile.id %}">Click here to edit profile</a><br>
-            <a href = "{% url 'turk:form_to_superuser' user.id %}">Click here write to superuser</a><br>
-        {% endif %}
+    {% if request.user.id == user.id %}
+    <div class = "col-sm-12">
+        <a href = "{% url 'turk:update_profile' user.id user.profile.id %}" class ="btn btn-primary btn-block">Click here to edit profile</a><br>
+        <a href = "{% url 'turk:form_to_superuser' user.id %}" class ="btn btn-primary btn-block">Click here write to superuser</a><br>
+    </div>
+    {% endif %}
     {% endif %}
 
 {% endblock %}

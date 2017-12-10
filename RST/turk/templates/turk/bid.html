@@ -1,22 +1,20 @@
 {% extends 'turk/base.html' %}
 
 {% block body %}
-    <div class="container-fluid">
-
+<div class="container">
         <div class="row">
-
-            <div class="col-sm-12 col-md-7">
+            <div class="col-sm-12">
                 <div class="=panel panel-default">
-                    <div class="panel-body">
+                    <div class="panel-body" style = "background-color:rgb(252, 252, 252)">
 
                         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {% if job.lowest_bid > 0 %}
-                                <p>Lowest current bid: {{job.lowest_bid}}</p>
+                                <p><b>Lowest current bid: </b> {{job.lowest_bid}}</p>
                             {% else %}
-                                <p>Lowest current bid: NONE</p>
+                                <p><b>Lowest current bid:  NONE </b></p>
                             {% endif %}
-                            <p>Place your bid here</p>
+                            <p><b>Place your bid here </b></p>
                             {% include 'turk/form-template.html' %}
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">

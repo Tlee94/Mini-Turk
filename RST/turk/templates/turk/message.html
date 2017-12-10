@@ -2,25 +2,44 @@
 
 {% block body %}
 
-<h1>Message Board</h1>
 
-<h3>Your Warnings</h3>
-{% for msg in user.message_set.all %}
-    <p><a href="{% url 'turk:message_detail' user.id msg.id %}">{{msg.title}}</a></p>
-{% endfor %}
+<div class = "container">
+        <div class="=panel panel-default">
+                <div class = "panel-heading" style = "background-color:rgba(54, 54, 54, 0.5)">
+                    <h1>Message Board</h1>
+                </div>
+        </div>
 
-<h3>Your Complete Jobs</h3>
+        <div class="panel-body" style = "background-color:rgb(255, 251, 251)">
+            <h3>Your Warnings</h3>
+                {% if request.user.profile.warn_poor == True %}
+                    <h4>Poor Performance</h4>
+                    - Your average rating is <= 2 for >= 5 projects.
+                {% endif %}
 
-{% if request.user.profile.position == "Client" %}
-    {% for job in jobs %}
-        <p><a href="{% url 'turk:job_description' job.user.id job.id %}">{{job.job_title}}</a></p>
-    {% endfor %}
-{% endif %}
+                {% if request.user.profile.warn_eval == True %}
+                    <h4>Irresponsible Evaluations to Others</h4>
+                    - Your average rating to others is < 2 or >4 for >= 8 projects.
+                {% endif %}
 
-{% if request.user.profile.position == "Developer" %}
-    {% for job in jobs %}
-        <p><a href="{% url 'turk:job_description' job.job.user.id job.job.id %}">{{job.job.job_title}}</a></p>
-    {% endfor %}
-{% endif %}
+                {% if request.user.profile.warn_money == True %}
+                    <h4>Poor Client can't pay</h4>
+                    - You didn't have enough money to pay the developer.
+                {% endif %}
 
+            <h3>Your Complete Jobs</h3>
+
+            {% if request.user.profile.position == "Client" %}
+                {% for job in jobs %}
+                    <p><a href="{% url 'turk:job_description' job.user.id job.id %}">{{job.job_title}}</a></p>
+                {% endfor %}
+            {% endif %}
+
+            {% if request.user.profile.position == "Developer" %}
+                {% for job in jobs %}
+                    <p><a href="{% url 'turk:job_description' job.job.user.id job.job.id %}">{{job.job.job_title}}</a></p>
+                {% endfor %}
+            {% endif %}
+        </div>
+</div>
 {% endblock %}

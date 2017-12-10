@@ -2,6 +2,7 @@ from .models import DeveloperChosenForJob
 from datetime import datetime, timedelta
 from django.utils import timezone
 from .models import Profile
+from .models import Profile, Job, Bidder, Message, JobSubmission
 
 def get_lowest_bid(job):
     bid_list = job.bidder_set.all()
@@ -17,6 +18,10 @@ def get_lowest_bid(job):
 
 
 def assign_developer(user, job, bidder_user, bidder, super_user, initial_payment):
+    warn_cli(job)
+    if(job.user.profile.warn_money == True):
+        print('WARN MONEY == TRUE, return back')
+        return
     bidder_user.profile.money += (initial_payment *.95)
     user.profile.money -= initial_payment
     super_user.profile.money += (initial_payment *.05)
@@ -117,6 +122,12 @@ def warn_user(profile):
         if(profile.average_rating <= 2):
             profile.warn_poor = True
             profile.save()
+
+            # a = Message()
+            # a.title = "Poor Performance"
+            # a.message = "Your average rating is <= 2 for >= 5 projects"
+            # a.user = profile.user
+            # a.save()
         else:
             profile.warn_poor = False
             profile.save()
@@ -126,14 +137,21 @@ def warn_user(profile):
         if((profile.avg_give_rating < 2) or (profile.avg_give_rating >4)):
             profile.warn_eval = True
             profile.save()
+
+            # b = Message()
+            # b.title = "Irresponsible Evaluations to Others"
+            # b.message = "Your average rating to others is < 2 or >4 for >= 8 projects"
+            # b.user = profile.user
+            # b.save()
         else:
             profile.warn_eval = False
             profile.save()
 
-    if((profile.warn_poor == True) and (profile.warn_eval == True) and (profile.warn_final == False)):
-        profile.warn_final = True
-        profile.save()
-        print('Final warning:', profile.warn_final)
+    # # This part is outdated, moved to final_warn()
+    # if((profile.warn_poor == True) and (profile.warn_eval == True) and (profile.warn_final == False)):
+    #     profile.warn_final = True
+    #     profile.save()
+    #     print('Final warning:', profile.warn_final)
 
     # # Time to get tossed out :) for being warned twice hehexd
     # if(profile.warn_final == True):
@@ -150,6 +168,38 @@ def ban(profile,user):
         profile.isBlackListed = True
         profile.save()
         print('byebye')
+
+def warn_cli(job):
+    if(job.user.profile.money < job.job_price/2):
+        # Give warning, close job
+        job.user.profile.warn_money = True
+        job.is_open = False
+        job.is_complete = True
+        print('Warned Client for being broke', job.user.profile.money, job.job_price/2)
+        job.user.profile.save()
+        job.save()
+
+        # c = Message()
+        # c.title = "Poor Client can't pay"
+        # c.message = "You didn't have enough money to pay the developer."
+        # c.user = profile.user
+        # c.save()
+
+def final_warn(profile):
+    warning_count = 0
+    if(profile.warn_eval == True):
+        warning_count += 1
+    if(profile.warn_poor == True):
+        warning_count += 1
+    if(profile.warn_money == True):
+        warning_count += 1
+    print('Warning Count: ', warning_count)
+    if(warning_count >= 2):
+        # Give Final Warning
+        profile.warn_final = True
+    else:
+        profile.warn_final = False
+    profile.save()
 
 
 # def update_rate_db(rating, job):

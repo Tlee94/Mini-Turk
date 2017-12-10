@@ -92,6 +92,7 @@ def index(request):
         user = get_object_or_404(User, pk=profile.user.id)
         give_trophy(profile)
         warn_user(profile)
+        final_warn(profile)
 
         # TODO: FIX THIS
         if profile.warn_final == True:
@@ -116,6 +117,11 @@ def index(request):
     else:
         context = {
             'all_jobs': all_jobs,
+            'most_active_client_list': most_active_client_list,
+            'most_active_dev_list': most_active_dev_list,
+            'most_earned_dev_list': most_earned_dev_list,
+            'total_clients': total_clients,
+            'total_devs': total_devs,
         }
 
     return render(request, 'turk/index.html', context)
@@ -150,15 +156,21 @@ def message(request, user_id):
     if request.user.profile.position == "Client":
         jobs = Job.objects.filter(user=user).filter(is_complete=True)
 
-    if request.user.profile.position == "Developer":
-        jobs = JobSubmission.objects.filter(developer=user)
-
-    print(jobs)
-
-    context = {
+        context = {
         'user': user,
         'jobs': jobs,
-    }
+        }
+    elif request.user.profile.position == "Developer":
+        jobs = JobSubmission.objects.filter(developer=user)
+        context = {
+        'user': user,
+        'jobs': jobs,
+        }
+    
+    else:
+        context = {
+            'user': user,
+        }
 
     return render(request, 'turk/message.html', context)
 
@@ -229,6 +241,8 @@ def bidder_list(request, user_id, job_id):
         job.save()
         if bid_price == current_lowest_bid:
             assign_developer(user, job, bidder_user, bidder, super_user, initial_payment)
+            if(job.user.profile.warn_money == True):
+                return render(request, 'turk/inform_cli.html')
             return redirect('turk:detail', user_id=user_id)
         else:
             # may need to create a page for super user to confirm and automate the money transfer, other wise gata
@@ -278,6 +292,15 @@ def submit_job(request, user_id, job_id):
         diff_seconds = c.seconds
 
         if diff_seconds >= 0:
+            # check broke client warning here
+            # then if loop, warning == True
+            # just redirect to somewhere else, dont run code down here
+            # give msg to dev saying client has no money
+            warn_cli(job)
+            if(job.user.profile.warn_money == True):
+                return render(request, 'turk/inform_dev.html')
+
+
             print(job.job_price/2)
             print('SU $:', super_user.profile.money)
             print('Cli $:', job.user.profile.money)

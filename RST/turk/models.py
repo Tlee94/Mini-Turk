@@ -93,6 +93,7 @@ class Profile(models.Model):
 
     warn_poor = models.BooleanField(default=False)  # avg rating <=2 for >=5 projects
     warn_eval = models.BooleanField(default=False)  # avg rating to others <2 or >4 for >=8 projects
+    warn_money = models.BooleanField(default=False) # not enough money to pay
     warn_final = models.BooleanField(default=False) # final warning, next login = gg
 
     def __str__(self):
@@ -111,7 +112,7 @@ class Job(models.Model):
     is_rated = models.BooleanField(default=False)
 
     is_open = models.BooleanField(default=True) # Job is still open for bid
-    lowest_bid = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)], default=0)
+    lowest_bid = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100000)], default=0)
     bid_deadline = models.DateTimeField(default=datetime.now()+timedelta(7))
     job_deadline = models.DateTimeField(default=datetime.now()+timedelta(21))
 
@@ -122,7 +123,7 @@ class Job(models.Model):
 class Bidder(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
-    price = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(100)], default=1)
+    price = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(100000)], default=1)
     isHired = models.BooleanField(default=False)
 
     def __str__(self):
@@ -156,10 +157,12 @@ class Message(models.Model):
     title = models.CharField(max_length=250)
     message = models.TextField()
     MESSAGE_REASONS = (
-        ('Warnings', 'Warnings'),
+        ('Poor Performance', 'Poor Performance'),
+        ('Bad Evaluator','Bad Evaluator'),
+        ('Not Enough Funds','Not Enough Funds'),
         ('Jobs', 'Jobs'),
     )
-    reason = models.CharField(max_length=9, choices=MESSAGE_REASONS, default='Temporary')
+    reason = models.CharField(max_length=30, choices=MESSAGE_REASONS, default='Warnings')
 
     def __str__(self):
         return self.title

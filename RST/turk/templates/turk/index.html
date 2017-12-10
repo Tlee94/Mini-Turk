@@ -1,50 +1,218 @@
 <!-- lists of job -->
 {% extends 'turk/base.html' %}
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% block body %}
-    {% if all_jobs %}
-        {% if request.user.is_authenticated %}
-            <h3>Most active clients</h3>
-            {% for  clients in most_active_client_list %}
-                <p><a href="{% url 'turk:detail' clients.user.id %}">{{clients}}</a></p>
-            {% endfor %}
-
-            <h3>Most active Developer</h3>
-            {% for  dev in most_active_dev_list %}
-                <p><a href="{% url 'turk:detail' dev.user.id %}">{{dev}}</a></p>
-            {% endfor %}
-
-            <h3>Grand Statistic</h3>
-            <p>Total Number of clients: {{total_clients}} </p>
-            <p>Total Number of devs: {{total_devs}} </p>
-
-            <p>Most earned Devs:</p>
-            {% for  dev in most_earned_dev_list %}
-                <p><a href="{% url 'turk:detail' dev.user.id %}">{{dev}}</a></p>
-            {% endfor %}
-
-            <p>Most project client :</p>
-            {% for  clients in most_active_client_list %}
-                <p><a href="{% url 'turk:detail' clients.user.id %}">{{clients}}</a></p>
-            {% endfor %}
-
-            <h3>Users with similar interest</h3>
-            {% for user in similar_users %}
-                <p><a href="{% url 'turk:detail' user.user.id %}">{{user}}</a></p>
-            {% endfor %}
-
-        {% endif %}
-
-        <h3> Here are all jobs </h3>
-
-        {% for job in all_jobs %}
-            <p><a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a>
-            {{job.user.first_name}} id:{{job.user.id}} &nbsp &nbsp bid deadline: {{job.bid_deadline}}
+        <div class="jumbotron" style = "background-image:url(https://www.abnamro.com/en/images/Images/070_Carriere/866x542-Hands_typing_on_a_laptop.jpg);
+                    background-repeat:no-repeat;background-size:cover;">
+          <h1 class = "text-center"><b>RST</b></h1>      
+          <p class = "text-center"><b>Where clients and developers unite!</b></p>
+          {% if not request.user.is_authenticated %}
+            <p class="text-center">
+                <a class="btn btn-primary btn-lg" href="{% url 'turk:register' %}" role="button">Sign Up Now</a>
             </p>
-        {% endfor %}
+          {% endif %}
 
-        {% else %}
-            <h3> No jobs yet </h3>
-    {% endif %}
+         <!-- {% if request.user.is_authenticated %}
+          <p class="text-center">
+            <a class="btn btn-primary btn-lg" href="" role="button">Get Started</a>
+          </p>
+          {% endif %}-->
+        </div>
+
+    
+            <div class = "container">
+                <div class = "row">
+                    <div class = "col-sm-6">
+                        <div class = "panel panel-primary" style = "position:static">
+                            <div class = "panel-heading text-center">
+                                <h3><b>Most Active Clients</b></h3>
+                            </div>
+
+                            <div class = "panel-body">
+                                {% for  clients in most_active_client_list %}
+                                    <a href="{% url 'turk:detail' clients.user.id %}"><img src="{{ clients.profile_picture.url }}" width = "100" height = "100" class = "img-rounded" style = "margin-left:40px;margin-right:30px"></a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class = "col-sm-6">
+                        <div class = "panel panel-primary" >
+                            <div class = "panel-heading text-center"> 
+                                <h3><b>Most Active Developers</b></h3>
+                            </div>
+
+                            <div class = "panel-body">
+                                {% for  dev in most_active_dev_list %}
+                                    <a href="{% url 'turk:detail' dev.user.id %}"><img src="{{ dev.profile_picture.url }}" width = "100" height = "100" class = "img-rounded" style = "margin-left:40px;margin-right:30px"></a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "container">
+                <div class = "row">
+                    <div class = "col-sm-12" >
+                        <div class = "panel panel-primary" style = "position:static">
+                            <div class = "panel-heading text-center"> 
+                                <h3><b>Grand Statistic</b></h3>
+                            </div>
+
+                            <div class = "panel-body">
+                                <div class = "row">
+                                    <div class = "col-sm-6 text-center">
+                                            <b>Total Number of clients: {{total_clients}}</b>
+                                    </div>
+
+                                    <div class = "col-sm-6 text-center">
+                                        <b>Total Number of devs: {{total_devs}}</b>
+                                    </div>
+                                </div>
+                                
+                                    <div class = "col-sm-6 text-center">
+                                        <h3><b>Most earned Devs </b></h3>
+                                            {% for  dev in most_earned_dev_list %}
+                                                <a href="{% url 'turk:detail' dev.user.id %}"><img src="{{ dev.profile_picture.url }}" width = "100" height = "100" class = "img-rounded" style = "margin-left:40px;margin-right:30px"></a>
+                                            {% endfor %}
+                                    </div>
+                                
+                                    <div class = "col-sm-6 text-center">
+                                        <h3><b>Most project client </b></h3>
+                                            {% for  clients in most_active_client_list %}
+                                                <a href="{% url 'turk:detail' clients.user.id %}"><img src="{{ clients.profile_picture.url }}" width = "100" height = "100" class = "img-rounded" style = "margin-left:40px;margin-right:30px"></a>
+                                            {% endfor %}
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                
+
+<!--<div class = "container">
+    <div class = "row">
+        <div class = "col-sm-6" >
+            <div class = "panel panel-default" style = "position:static">
+                <div class = "panel-heading">  
+                    <h1><b>Top 3 Most Active Clients</b></h1>
+                </div>
+                <div class = "panel-body">
+                    <a href = ""> <img src="https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/68dd54ca-60cf-4ef7-898b-26d7cbe48ec7/10-dithering-opt.jpg" class = "img-rounded" height = "100" width= "100" style = "margin-left:45px;margin-right:60px"></a>
+                    <a href = ""><img src="https://www.sierrafishandpets.com/wp-content/uploads/2016/03/17833-100x100.png" class="img-rounded" alt="Cinque Terre" height = "100" width= "100" style = "margin-right:60px;"></a>
+                    <a href = ""><img src="https://forum.ipfire.org/download/file.php?avatar=27958_1490873229.gif" class="img-rounded" alt="Cinque Terre" height = "100" width= "100"></a> 
+                </div>
+            </div>
+        </div>
+            
+        <div class = "col-sm-6">
+            <div class = "panel panel-default" >
+                <div class = "panel-heading">  
+                    <h1><b>Top 3 Most Active Developers</b></h1>
+                </div>
+                <div class = "panel-body">
+                        <a href = ""><img src="https://speed.ext.net/identity/extnet-100x100-cog.gif" class="img-rounded" alt="Cinque Terre" height = "100" width= "100" style = "margin-left:45px;margin-right:60px"></a>
+                        <a href = ""><img src="https://www.sierrafishandpets.com/wp-content/uploads/2016/03/17833-100x100.png" class="img-rounded" alt="Cinque Terre" height = "100" width= "100" style = "margin-right:60px;"></a>
+                        <a href = ""><img src="https://speed.ext.net/identity/extnet-100x100-cog.gif" class="img-rounded" alt="Cinque Terre" height = "100" width= "100"> </a>
+                </div>
+            </div>
+        </div> 
+    </div>
+ </div>
+-->
+ {% if request.user.is_authenticated %}
+ <div class = "container">
+     <div class = "row">
+         <div class = "col-sm-12">
+             <div class = "panel panel-primary">
+                 <div class = "panel-heading text-center">
+                     <h2><b> Users with similar Interests</b> </h2>
+                 </div>
+ 
+                 <div class = "panel-body text-center">
+                        {% for user in similar_users %}
+                            <a href="{% url 'turk:detail' user.user.id %}"><img src="{{ user.profile_picture.url }}" width = "100" height = "100" class = "img-rounded" style = "margin-left:58px;margin-right:58px"></a>
+                        {% endfor %}
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ {% endif %}
+
+ <script>
+        $(document).ready(function(){
+          $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+</script>
+
+<div class = "container">
+    <div class = "row">
+        <div class = "col-sm-12">         
+            <div class = "panel panel-primary">
+                <div class = "panel-heading text-center">
+                    {% if all_jobs %}
+                        <h2><b> All Posted Jobs</b> </h2>
+                </div>
+        
+                <div class = "panel-body" style="height:400px;overflow-y: scroll;">
+                    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+                    
+                    <table class = "table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Job title</th>
+                                <th>Job Owner</th>
+                                <th>User id</th>
+                                <th>Bid deadline</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id = "myTable">
+                            {% for job in all_jobs %}
+                                <tr>
+                                    <td>
+                                        <a href = "{% url 'turk:job_description' job.user.id job.id %}">{{ job.job_title }}</a>
+                                    </td>
+
+                                    <td>
+                                        {{job.user.first_name}}
+                                    </td> 
+
+                                    <td>
+                                        id:{{job.user.id}}
+                                    </td>
+
+                                    <td>
+                                        <!--&nbsp &nbsp--> {{job.bid_deadline}}
+                                    </td>
+                                    
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                    {% else %}
+                        <h3> No jobs yet </h3>
+            </div>
+                     {% endif %}
+        </div>       
+    </div>
+</div>
+
+
+</html>
 {% endblock %}
+
 

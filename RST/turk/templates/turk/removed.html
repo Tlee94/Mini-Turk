@@ -1,0 +1,5 @@
+from message.html under message warning
+
+    {% for msg in user.message_set.all %}
+        <a href="{% url 'turk:message_detail' user.id msg.id %}">{{msg.title}}</a>
+    {% endfor %}
