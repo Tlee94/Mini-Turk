@@ -19,6 +19,52 @@
                     {% else %}
                         <h1> {{user.first_name}} </h1>
                     {% endif %}
+
+                    <!--*CTF{found_the_trophy}-->
+                    {% if user.profile.honor_Early_Bird %}
+                        <img src="/media/early_bird.png" width="20" height="20" alt="early_bird">
+                    {% endif %}
+
+                    {% if user.profile.honor_Hard_Worker %}
+                        <img src="/media/hard_worker.png" width="20" height="20" alt="hard_worker">
+                    {% endif %}
+
+                    {% if user.profile.honor_MILLIONAIRE %}
+                        <img src="/media/MILLIONAIRE.png" width="20" height="20" alt="MILLIONAIRE">
+                    {% endif %}
+
+                    {% if user.profile.honor_Job_Supplier %}
+                        <img src="/media/job_supplier.png" width="20" height="20" alt="job_supplier">
+                    {% endif %}
+
+                    {% if user.profile.honor_Veteran %}
+                        <img src="/media/veteran.png" width="20" height="20" alt="veteran">
+                    {% endif %}
+
+                    {% if user.profile.honor_toohardman %}
+                        <img src="/media/toohardman.png" width="20" height="20" alt="toohardman">
+                    {% endif %}
+
+                    {% if user.profile.honor_Cold_Headed_Tim %}
+                        <img src="/media/cold_headed_tim.png" width="20" height="20" alt="cold_headed_tim">
+                    {% endif %}
+
+                    {% if user.profile.honor_Novice %}
+                        <img src="/media/novice.png" width="20" height="20" alt="novice">
+                    {% endif %}
+
+                    {% if user.profile.honor_Normie %}
+                        <img src="/media/normie.png" width="20" height="20" alt="normie">
+                    {% endif %}
+
+                    {% if user.profile.honor_General %}
+                        <img src="/media/general.png" width="20" height="20" alt="general">
+                    {% endif %}
+
+                    {% if user.profile.honor_Lurker %}
+                        <img src="/media/lurker.png" width="20" height="20" alt="lurker">
+                    {% endif %}
+
                     <h3>user id: {{user.id}}</h3>
                     <h3>profile id: {{user.profile.id}}</h3>
                     <h3>email: {{ user.profile.email }}</h3>

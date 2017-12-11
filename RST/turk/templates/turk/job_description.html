@@ -23,13 +23,19 @@
                             {{ job.job_description}}
                         </div> 
                     </div>
-                    
+
+
+                    {% if job.is_open %}
+                        <p><b>Bidding Deadline: </b>{{ job.bid_deadline }}</p>
+                    {% else %}
+                    <p><b>Job Deadline: </b>{{ job.job_deadline }}</p>
+                    <p><b>Price Chosen: </b>{{ job.job_price }}</p>
+                    {% endif %}
 
                     {% if job.lowest_bid > 0 %}
                         <p><b>Lowest Bid: </b> {{ job.lowest_bid }}</p>
                     {% else %}
-                    
-                    <p><b>Lowest Bid: </b> None</p>
+                        <p><b>Lowest Bid: </b> None</p>
                     {% endif %}
 
                     {% if request.user.id == job.user.id %}
@@ -37,7 +43,7 @@
                             <p>List of current bidders:</p>
                                 
                             {% for bidder in job.bidder_set.all %}
-                                <p>{{bidder.user.username}}: {{bidder.price}}</p>
+                                <p><a href="{% url 'turk:detail' bidder.user.id %}">{{bidder.user.profile.name}}: </a>{{bidder.price}}</p>
                             {% endfor %}
                             
                             {% else %}
@@ -45,10 +51,14 @@
                         {% endif %}<br>
                     {% endif %}
 
+                        {% if job.developerchosenforjob %}
+                            <p><b>Developer chosen: </b>{{ job.developerchosenforjob.user.profile.name }}</p>
+                        {% endif %}
+
                         <p><b>Profile position: </b>{{user.profile.position}}</p>
                         <p><b>My position: </b> {{ request.user.profile.position }}</p>
 
-                        {% if request.user.id == user.id %}
+                        {% if request.user.id == job.user.id %}
                             <a href = "{% url 'turk:delete_job' user.id job.id %}">Delete</a><br>
                         {% endif %}
 
@@ -71,7 +81,7 @@
                                 {% endif %}
                                 {% if job.developerchosenforjob %}
                                     {% if job.is_complete == True %}
-                                        <p>File: <a href="{{ job.jobsubmission.submission.url }}">File </a></p>
+                                        <p>Submission: <a href="{{ job.jobsubmission.submission.url }}">File </a></p>
                                         {% if job.is_rated == False %}
                                             <a href = "{% url 'turk:rate_job' user.id job.id %}">Click Here to Rate Jobs</a>
                                         {% endif %}

@@ -21,13 +21,15 @@
                             {% endif %}
                             <p>Pick a developer to hire</p>
                             {% for bidder in bid_list %}
-                                <p><input type="radio" value= {{bidder.user.id}},{{bidder.price}},{{bidder.id}},{{job.lowest_bid}} name="bidder"> {{bidder.price}} {{bidder.user.username}} {{bidder.id}} </input></p>
+                                <p><input type="radio" value= {{bidder.user.id}},{{bidder.price}},{{bidder.id}},{{job.lowest_bid}} name="bidder"> {{bidder.price}} {{bidder.user.profile.name}} {{bidder.id}} </input></p>
                             {% endfor %}
+                            {% if bid_list %}
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <button type="submit" class="btn btn-success">Submit</button>
                                 </div>
                             </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>

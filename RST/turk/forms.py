@@ -17,14 +17,14 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password']
 
 
 class JobForm(forms.ModelForm):
 
     class Meta:
         model = Job
-        fields = ['job_title', 'job_description', 'bid_deadline']
+        fields = ['job_title', 'job_description', 'bid_deadline', 'job_deadline']
 
 
 class BidForm(forms.ModelForm):
