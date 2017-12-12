@@ -81,7 +81,7 @@
                                 {% endif %}
                                 {% if job.developerchosenforjob %}
                                     {% if job.is_complete == True %}
-                                        <p>Submission: <a href="{{ job.jobsubmission.submission.url }}">File </a></p>
+                                        <p><b>Submission Link: </b>{{ job_sub }}</p>
                                         {% if job.is_rated == False %}
                                             <a href = "{% url 'turk:rate_job' user.id job.id %}">Click Here to Rate Jobs</a>
                                         {% endif %}

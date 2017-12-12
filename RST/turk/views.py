@@ -205,10 +205,21 @@ def job_description(request, user_id, job_id):
 
     get_lowest_bid(job)
 
-    context = {
-        'user': user,
-        'job': job,
-    }
+    jobsub = JobSubmission.objects.all().filter(job=job)
+
+    if(jobsub):
+        context = {
+            'user': user,
+            'job': job,
+            'job_sub': jobsub[0],
+        }
+    else:
+        context = {
+            'user': user,
+            'job': job,
+
+        }
+
     return render(request, 'turk/job_description.html', context)
 
 
